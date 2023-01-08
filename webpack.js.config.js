@@ -3,8 +3,8 @@ const glob = require('glob');
 const path = require('path');
 
 
-const config = (entry, output, { copy, production } = {}) => {
-    let config = require('./webpack.config.js')(entry, output, { copy, production });
+const config = ({ entry, output, copy, production }) => {
+    let config = require('./webpack.config.js')({ entry, output, copy, production });
 
     return Object.assign(config, {
         module: {

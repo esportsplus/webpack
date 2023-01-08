@@ -7,8 +7,8 @@ const path = require('path');
 const sass = require('sass');
 
 
-const config = (entry, output, { copy, production } = {}) => {
-    let config = require('./webpack.config.js')(entry, output, { copy, production });
+const config = ({ entry, output, copy, production }) => {
+    let config = require('./webpack.config.js')({ entry, output, copy, production });
 
     return Object.assign(config, {
         module: {
