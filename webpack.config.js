@@ -1,4 +1,4 @@
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 
@@ -23,7 +23,7 @@ module.exports = ({ entry, output, copy, production }) => {
         }
 
         plugins.push(
-            new CopyPlugin({
+            new CopyWebpackPlugin({
                 patterns,
                 options: {
                     concurrency: 100
