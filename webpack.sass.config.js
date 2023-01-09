@@ -11,6 +11,7 @@ const config = ({ entry, output, copy, production }) => {
     let config = require('./webpack.config.js')({ entry, output, copy, production });
 
     return Object.assign(config, {
+        devtool: 'cheap-source-map',
         module: {
             rules: [
                 {
@@ -56,7 +57,9 @@ const config = ({ entry, output, copy, production }) => {
             minimizer: [
                 `...`,
                 new CssMinimizerPlugin()
-            ]
+            ],
+            removeEmptyChunks: false,
+            splitChunks: false,
         },
         plugins: [
             new MiniCssExtractPlugin(),
@@ -68,7 +71,10 @@ const config = ({ entry, output, copy, production }) => {
                 verbose: false
             }),
             ...config.plugins
-        ]
+        ],
+        resolve: {
+            symlinks: false
+        }
     });
 };
 

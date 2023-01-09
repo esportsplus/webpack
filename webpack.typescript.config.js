@@ -1,3 +1,4 @@
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const glob = require('glob');
 const path = require('path');
@@ -7,6 +8,7 @@ const config = ({ entry, output, copy, production }) => {
     let config = require('./webpack.config.js')({ entry, output, copy, production });
 
     return Object.assign(config, {
+        devtool: 'cheap-source-map',
         module: {
             rules: [
                 {
@@ -35,8 +37,14 @@ const config = ({ entry, output, copy, production }) => {
         optimization: {
             mangleWasmImports: config.mode === 'production',
             minimize: config.mode === 'production',
+            removeEmptyChunks: false,
+            splitChunks: false,
             usedExports: config.mode === 'production'
         },
+        plugins: [
+            ...config.plugins,
+            new ForkTsCheckerWebpackPlugin()
+        ],
         resolve: {
             extensions: ['.js', '.ts', '.tsx'],
             fullySpecified: false,
@@ -44,7 +52,8 @@ const config = ({ entry, output, copy, production }) => {
                 new TsconfigPathsPlugin({
                     extensions: ['.js', '.ts', '.tsx']
                 })
-            ]
+            ],
+            symlinks: false
         }
     });
 };
