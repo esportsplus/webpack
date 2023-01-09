@@ -11,7 +11,7 @@ module.exports = ({ entry, output, copy, production }) => {
     if (copy) {
         let patterns = [];
 
-        if (typeof copy === 'object' && !Array.isArray(copy)) {
+        if (typeof copy !== 'object' || Array.isArray(copy)) {
             throw new Error('`copy` must be an object');
         }
 
