@@ -25,5 +25,5 @@
     "description": "Webpack",
     "name": "@esportsplus/webpack",
     "private": false,
-    "version": "0.0.13"
+    "version": "0.0.14"
 }
