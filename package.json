@@ -8,6 +8,7 @@
         "css-minimizer-webpack-plugin": "^4.2.2",
         "fork-ts-checker-webpack-plugin": "^7.2.14",
         "glob": "^8.0.3",
+        "html-webpack-plugin": "^5.5.0",
         "mini-css-extract-plugin": "^2.7.2",
         "modern-normalize": "^1.1.0",
         "npm-run-all": "^4.1.5",
@@ -24,14 +25,18 @@
         "webpack-dev-server": "^4.11.1"
     },
     "description": "Webpack",
+    "main": "./build/index.js",
     "name": "@esportsplus/webpack",
     "private": false,
     "scripts": {
-        "build:css": "webpack --config webpack.sass.config.js --env=production=false",
-        "build:js": "webpack --config webpack.typescript.config.js --env=production=false",
-        "build:ts": "tsc && tsc-alias",
+        "build": "tsc && tsc-alias",
         "-": "-",
-        "serve": "webpack serve --config webpack.typescript.config.js"
+        "example:build:js": "webpack --config webpack.config.js",
+        "example:build:ts": "tsc && tsc-alias",
+        "example:server": "webpack serve --config webpack.config.js --env=production=false",
+        "--": "--",
+        "prepublishOnly": "npm run build"
     },
+    "types": "./build/index.d.ts",
     "version": "0.0.16"
 }
