@@ -7,7 +7,7 @@ import rules from './rules';
 
 
 const entry = (pattern: string) => {
-    return glob.sync(path.resolve(pattern), { nosort: true });
+    return glob.sync(path.resolve(pattern).replace(/\\/g, '/'), { nosort: true });
 };
 
 entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: string } = {}) => {
