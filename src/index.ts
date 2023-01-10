@@ -6,8 +6,13 @@ import options from './options';
 import rules from './rules';
 
 
+function resolve(pattern: string) {
+    return path.resolve(pattern).replace(/\\/g, '/');
+}
+
+
 const entry = (pattern: string) => {
-    return glob.sync(path.resolve(pattern).replace(/\\/g, '/'), { nosort: true });
+    return glob.sync(resolve(pattern), { nosort: true });
 };
 
 entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: string } = {}) => {
@@ -42,7 +47,7 @@ export default (config: WebpackConfiguration, { copy, index, production, server,
     options.server(config, server);
 
     rules.sass(config);
-    rules.typescript(config, tsconfig);
+    rules.typescript(config, resolve(tsconfig));
 
     return config;
 };
