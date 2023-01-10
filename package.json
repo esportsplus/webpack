@@ -25,18 +25,14 @@
         "webpack-dev-server": "^4.11.1"
     },
     "description": "Webpack",
-    "main": "./build/index.js",
     "name": "@esportsplus/webpack",
     "private": false,
     "scripts": {
-        "build": "tsc && tsc-alias",
+        "ex:build:js": "webpack",
+        "ex:build:ts": "tsc && tsc-alias",
+        "ex:server": "webpack serve --config webpack.config.js --env=production=false",
         "-": "-",
-        "example:build:js": "webpack --config webpack.config.js",
-        "example:build:ts": "tsc && tsc-alias",
-        "example:server": "webpack serve --config webpack.config.js --env=production=false",
-        "--": "--",
-        "prepublishOnly": "npm run build"
+        "ex:prepublishOnly": "npm run build"
     },
-    "types": "./build/index.d.ts",
     "version": "0.0.16"
 }
