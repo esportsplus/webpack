@@ -1,13 +1,12 @@
-import { WebpackConfiguration } from 'webpack-cli';
 import { default as CopyWebpackPlugin } from 'copy-webpack-plugin';
+import { Configuration } from '~/types';
 
 
-export default (config: WebpackConfiguration, patterns?: { from: string, to: string}[]) => {
+export default (config: Configuration, patterns?: CopyWebpackPlugin.Pattern[]) => {
     if (!patterns) {
         return;
     }
 
-    config.plugins = config.plugins || [];
     config.plugins.push(
         new CopyWebpackPlugin({
             options: {

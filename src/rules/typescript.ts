@@ -1,11 +1,9 @@
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
-import { WebpackConfiguration } from 'webpack-cli';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import { Configuration } from '~/types';
 
 
-export default (config: WebpackConfiguration, tsconfig: string) => {
-    config.module = config.module || {};
-    config.module.rules = config.module?.rules || [];
+export default (config: Configuration, tsconfig: string) => {
     config.module.rules.push(
         {
             generator: {
@@ -30,18 +28,19 @@ export default (config: WebpackConfiguration, tsconfig: string) => {
         }
     );
 
-    config.optimization = config.optimization || {};
     config.optimization.mangleWasmImports = config.mode === 'production';
     config.optimization.usedExports = config.mode === 'production';
 
-    config.plugins = config.plugins || [];
     config.plugins.push(
         new ForkTsCheckerWebpackPlugin()
     );
 
-    config.resolve = config.resolve || {};
-    config.resolve.plugins = config.resolve.plugins || [];
+    config.resolve.extensions = ['.js', '.ts', '.tsx'];
+    config.resolve.fullySpecified = false;
     config.resolve.plugins.push(
-        new TsconfigPathsPlugin({ configFile: tsconfig })
+        new TsconfigPathsPlugin({
+            configFile: tsconfig,
+            extensions: config.resolve.extensions
+        })
     );
 };

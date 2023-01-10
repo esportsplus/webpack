@@ -1,14 +1,12 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { default as CssMinimizerPlugin } from 'css-minimizer-webpack-plugin';
 import { default as MiniCssExtractPlugin } from 'mini-css-extract-plugin';
-import { WebpackConfiguration } from 'webpack-cli';
+import { Configuration } from '~/types';
 import autoprefixer from 'autoprefixer';
 import sass from 'sass';
 
 
-export default (config: WebpackConfiguration) => {
-    config.module = config.module || {};
-    config.module.rules = config.module?.rules || [];
+export default (config: Configuration) => {
     config.module.rules.push({
         test: /\.(c|sc|sa)ss$/,
         use: [
@@ -46,13 +44,11 @@ export default (config: WebpackConfiguration) => {
         ],
     });
 
-    config.optimization = config.optimization || {};
     config.optimization.minimizer = config.optimization.minimizer || [];
     config.optimization.minimizer.push(
         new CssMinimizerPlugin()
     );
 
-    config.plugins = config.plugins || [];
     config.plugins.push(
         new MiniCssExtractPlugin(),
         new CleanWebpackPlugin({

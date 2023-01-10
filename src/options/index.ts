@@ -4,3 +4,4 @@ import server from './server';
 
 
 export default { copy, html, server };
+export { copy, html, server };

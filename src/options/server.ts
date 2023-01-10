@@ -1,13 +1,10 @@
 import { WebpackConfiguration } from 'webpack-cli';
+import { Configuration } from '~/types';
 
 
-export default (config: WebpackConfiguration, server?: WebpackConfiguration['devServer'] | boolean) => {
+export default (config: Configuration, server?: WebpackConfiguration['devServer'] | boolean) => {
     if (!server) {
         return;
-    }
-
-    if (typeof server === 'boolean') {
-        server = {};
     }
 
     config.devServer = Object.assign({
@@ -17,5 +14,5 @@ export default (config: WebpackConfiguration, server?: WebpackConfiguration['dev
         compress: true,
         hot: true,
         open: true
-    }, server);
+    }, (typeof server === 'boolean') ? {} : server);
 };

@@ -1,18 +1,8 @@
 {
     "compilerOptions": {
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
-        "declaration": true,
-        "declarationDir": "./build",
-        "esModuleInterop": true,
-        "module": "commonjs",
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "outDir": "build",
-        "removeComments": true,
-        "target": "es5"
     },
     "exclude": ["node_modules"],
+    "extends": "./tsconfig.base.json",
     "include": ["src"]
 }

@@ -1,5 +1,4 @@
-import { WebpackConfiguration } from 'webpack-cli';
-import { Options } from './types';
+import { Configuration, Options } from './types';
 import glob from 'glob';
 import path from 'path';
 import options from './options';
@@ -32,8 +31,11 @@ entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: 
 };
 
 
-export default (config: WebpackConfiguration, { copy, index, production, server, tsconfig }: Options) => {
+export default (config: Configuration, { copy, index, production, server, tsconfig }: Options) => {
     config.mode = (`${production}` !== 'false') ? 'production' : 'development';
+
+    config.module = config.module || {};
+    config.module.rules = config.module?.rules || [];
 
     config.optimization = config.optimization || {};
     config.optimization.minimize = config.mode === 'production';
@@ -41,6 +43,11 @@ export default (config: WebpackConfiguration, { copy, index, production, server,
     config.output = config.output || {};
     config.output.filename = config.output.filename || '[contenthash][ext]';
     config.output.path = config.output.path ? path.resolve(config.output.path) : undefined;
+
+    config.plugins = config.plugins || [];
+
+    config.resolve = config.resolve || {};
+    config.resolve.plugins = config.resolve.plugins || [];
 
     options.copy(config, copy);
     options.html(config, index);
