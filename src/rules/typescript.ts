@@ -3,7 +3,7 @@ import { WebpackConfiguration } from 'webpack-cli';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 
 
-export default (config: WebpackConfiguration) => {
+export default (config: WebpackConfiguration, tsconfig: string) => {
     config.module = config.module || {};
     config.module.rules = config.module?.rules || [];
     config.module.rules.push(
@@ -42,6 +42,6 @@ export default (config: WebpackConfiguration) => {
     config.resolve = config.resolve || {};
     config.resolve.plugins = config.resolve.plugins || [];
     config.resolve.plugins.push(
-        new TsconfigPathsPlugin()
+        new TsconfigPathsPlugin({ configFile: tsconfig })
     );
 };

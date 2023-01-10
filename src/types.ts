@@ -6,6 +6,7 @@ type Options = {
     index?: Parameters<typeof options.html>[1];
     production?: boolean | string;
     server?: Parameters<typeof options.server>[1];
+    tsconfig: string;
 };
 
 

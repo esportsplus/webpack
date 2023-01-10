@@ -27,7 +27,7 @@ entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: 
 };
 
 
-export default (config: WebpackConfiguration, { copy, index, production, server }: Options = {}) => {
+export default (config: WebpackConfiguration, { copy, index, production, server, tsconfig }: Options) => {
     config.mode = (`${production}` !== 'false') ? 'production' : 'development';
 
     config.optimization = config.optimization || {};
@@ -42,7 +42,7 @@ export default (config: WebpackConfiguration, { copy, index, production, server 
     options.server(config, server);
 
     rules.sass(config);
-    rules.typescript(config);
+    rules.typescript(config, tsconfig);
 
     return config;
 };
