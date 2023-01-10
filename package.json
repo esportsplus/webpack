@@ -25,14 +25,21 @@
         "webpack-dev-server": "^4.11.1"
     },
     "description": "Webpack",
+    "devDependencies": {
+        "@types/rechoir": "^0.6.1"
+    },
+    "main": "./build/index.js",
     "name": "@esportsplus/webpack",
     "private": false,
     "scripts": {
+        "build": "tsc && tsc-alias",
+        "-": "-",
         "ex:build:js": "webpack",
         "ex:build:ts": "tsc && tsc-alias",
-        "ex:server": "webpack serve --config webpack.config.js --env=production=false",
-        "-": "-",
+        "ex:server": "webpack serve --env=production=false",
+        "--": "--",
         "ex:prepublishOnly": "npm run build"
     },
+    "types": "./build/index.d.ts",
     "version": "0.0.17"
 }
