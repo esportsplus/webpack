@@ -1,3 +1,4 @@
+import { WebpackConfiguration } from 'webpack-dev-server';
 import { Configuration, Options } from './types';
 import glob from 'glob';
 import path from 'path';
@@ -31,7 +32,7 @@ entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: 
 };
 
 
-export default (config: Configuration, { copy, index, production, server, tsconfig }: Options) => {
+export default (config: WebpackConfiguration, { copy, index, production, server, tsconfig }: Options) => {
     config.mode = (`${production}` !== 'false') ? 'production' : 'development';
 
     config.module = config.module || {};
@@ -49,12 +50,12 @@ export default (config: Configuration, { copy, index, production, server, tsconf
     config.resolve = config.resolve || {};
     config.resolve.plugins = config.resolve.plugins || [];
 
-    options.copy(config, copy);
-    options.html(config, index);
-    options.server(config, server);
+    options.copy(config as Configuration, copy);
+    options.html(config as Configuration, index);
+    options.server(config as Configuration, server);
 
-    rules.sass(config);
-    rules.typescript(config, resolve(tsconfig));
+    rules.sass(config as Configuration);
+    rules.typescript(config as Configuration, resolve(tsconfig));
 
     return config;
 };
