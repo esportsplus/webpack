@@ -2,12 +2,21 @@ import glob from 'fast-glob';
 import resolve from './resolve';
 
 
-const entry = (pattern: string) => {
-    return glob.sync(resolve(pattern));
+const js = (pattern: string, { hash }: { hash?: boolean }) => {
+    let files = glob.sync( resolve(pattern) );
+
+    if (hash) {
+        return {
+            filename: 'js/[contenthash].js',
+            import: files
+        };
+    }
+
+    return files;
 };
 
-entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: string } = {}) => {
-    let files = entry(pattern);
+const sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: string } = {}) => {
+    let files = glob.sync( resolve(pattern) );
 
     // TODO: Instead of build just glob?
     if (ui !== undefined) {
@@ -23,4 +32,4 @@ entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: 
 };
 
 
-export default entry;
+export default { js, sass };

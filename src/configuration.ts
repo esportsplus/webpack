@@ -13,7 +13,6 @@ export default (data: WebpackConfiguration, production: Options['production']): 
     data.optimization.minimize = data.mode === 'production';
 
     data.output = data.output || {};
-    data.output.filename = data.output.filename || '[contenthash][ext]';
     data.output.path = data.output.path ? path.resolve(data.output.path) : undefined;
 
     data.plugins = data.plugins || [];
