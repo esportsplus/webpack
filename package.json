@@ -2,11 +2,12 @@
     "author": "ICJR",
     "dependencies": {
         "autoprefixer": "^10.4.13",
-        "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "css-loader": "^6.7.3",
         "css-minimizer-webpack-plugin": "^4.2.2",
         "fast-glob": "^3.2.12",
+        "favicons": "^7.0.2",
+        "favicons-webpack-plugin": "^6.0.0",
         "fork-ts-checker-webpack-plugin": "^7.2.14",
         "html-webpack-plugin": "^5.5.0",
         "mini-css-extract-plugin": "^2.7.2",
@@ -21,7 +22,8 @@
         "typescript": "^4.9.4",
         "webpack": "^5.75.0",
         "webpack-cli": "^5.0.1",
-        "webpack-dev-server": "^4.11.1"
+        "webpack-dev-server": "^4.11.1",
+        "webpack-remove-empty-scripts": "^1.0.1"
     },
     "description": "Webpack",
     "main": "./build/index.js",

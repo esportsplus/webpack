@@ -1,21 +1,38 @@
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { default as CssMinimizerPlugin } from 'css-minimizer-webpack-plugin';
 import { default as MiniCssExtractPlugin } from 'mini-css-extract-plugin';
+import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration } from '~/types';
 import autoprefixer from 'autoprefixer';
+import glob from 'fast-glob';
 import sass from 'sass';
+import resolve from '~/resolve';
 
 
-export default (config: Configuration) => {
-    config.module.rules.push({
+const entry = (pattern: string, { directory, hash }: { directory?: string, hash?: boolean } = {}) => {
+    if (directory === undefined) {
+        directory = `css`;
+    }
+
+    // DO NOT ADD EXTENSION TO FILENAME
+    // - `mini-css-extract-plugin` plugin appends css extension once extracted
+    // - JS files created during bundle are left extensionless
+    // - Makes it easy to cleanup empty js files after build
+    return {
+        filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}]`,
+        import: glob.sync( resolve(pattern) )
+    };
+};
+
+
+export default (webpack: Configuration, use?: boolean) => {
+    if (!use) {
+        return;
+    }
+
+    webpack.module.rules.push({
         test: /\.(c|sc|sa)ss$/,
         use: [
-            {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                    esModule: false,
-                },
-            },
+            MiniCssExtractPlugin.loader,
             {
                 loader: 'css-loader',
                 options: {
@@ -44,19 +61,20 @@ export default (config: Configuration) => {
         ],
     });
 
-    config.optimization.minimizer = config.optimization.minimizer || [];
-    config.optimization.minimizer.push(
+    webpack.optimization.minimizer = webpack.optimization.minimizer || [];
+    webpack.optimization.minimizer.push(
         new CssMinimizerPlugin()
     );
 
-    config.plugins.push(
-        new MiniCssExtractPlugin(),
-        new CleanWebpackPlugin({
-            cleanAfterEveryBuildPatterns: [`${config?.output?.path}/**/css/**/*.js`],
-            cleanOnceBeforeBuildPatterns: [],
-            dangerouslyAllowCleanPatternsOutsideProject: false,
-            dry: false,
-            verbose: false
+    webpack.plugins.push(
+        new RemoveEmptyScriptsPlugin({
+            remove: /^(.(?!.*\.css$))*$/g
+        }),
+        new MiniCssExtractPlugin({
+            filename: (data: any) => {
+                return `${data?.chunk?.filenameTemplate || `[contenthash]`}.css`;
+            }
         })
     );
 };
+export { entry };

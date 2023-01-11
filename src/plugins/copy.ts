@@ -2,12 +2,12 @@ import { default as CopyWebpackPlugin } from 'copy-webpack-plugin';
 import { Configuration } from '~/types';
 
 
-export default (config: Configuration, patterns?: CopyWebpackPlugin.Pattern[]) => {
+export default (webpack: Configuration, patterns?: CopyWebpackPlugin.Pattern[]) => {
     if (!patterns) {
         return;
     }
 
-    config.plugins.push(
+    webpack.plugins.push(
         new CopyWebpackPlugin({
             options: {
                 concurrency: 100

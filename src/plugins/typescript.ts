@@ -1,14 +1,24 @@
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
+import glob from 'fast-glob';
+import resolve from '~/resolve';
 
 
-export default (config: Configuration, tsconfig: string) => {
-    config.module.rules.push(
-        {
-            test: /\.(svg|txt)$/i,
-            type: 'asset/source',
-        },
+const entry = (pattern: string, { directory, hash }: { directory?: string, hash?: boolean } = {}) => {
+    if (directory === undefined) {
+        directory = `js`;
+    }
+
+    return {
+        filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}].js`,
+        import: glob.sync( resolve(pattern) )
+    };
+};
+
+
+export default (webpack: Configuration, tsconfig: string) => {
+    webpack.module.rules.push(
         {
             test: /\.tsx?$/,
             use: 'ts-loader',
@@ -19,19 +29,20 @@ export default (config: Configuration, tsconfig: string) => {
         }
     );
 
-    config.optimization.mangleWasmImports = config.mode === 'production';
-    config.optimization.usedExports = config.mode === 'production';
+    webpack.optimization.mangleWasmImports = webpack.mode === 'production';
+    webpack.optimization.usedExports = webpack.mode === 'production';
 
-    config.plugins.push(
+    webpack.plugins.push(
         new ForkTsCheckerWebpackPlugin()
     );
 
-    config.resolve.extensions = ['.tsx', '.ts', '.js'];
-    config.resolve.fullySpecified = false;
-    config.resolve.plugins.push(
+    webpack.resolve.extensions = ['.tsx', '.ts', '.js'];
+    webpack.resolve.fullySpecified = false;
+    webpack.resolve.plugins.push(
         new TsconfigPathsPlugin({
             configFile: tsconfig,
-            extensions: config.resolve.extensions
+            extensions: webpack.resolve.extensions
         })
     );
 };
+export { entry };

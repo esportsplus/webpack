@@ -5,16 +5,14 @@ import plugins from './plugins';
 import resolve from './resolve';
 
 
-function normalize(webpack: WebpackConfiguration, { copy, html, production, server, tsconfig }: Options) {
-    production = `${production}` !== 'false';
-
-    webpack.mode = production ? 'production' : 'development';
+function normalize(webpack: WebpackConfiguration, { production }: Options) {
+    webpack.mode = (`${production}` !== 'false') ? 'production' : 'development';
 
     webpack.module = webpack.module || {};
     webpack.module.rules = webpack.module?.rules || [];
 
     webpack.optimization = webpack.optimization || {};
-    webpack.optimization.minimize = production;
+    webpack.optimization.minimize = webpack.mode === 'production';
 
     webpack.output = webpack.output || {};
     webpack.output.path = resolve( webpack.output?.path || 'public' );
@@ -24,20 +22,21 @@ function normalize(webpack: WebpackConfiguration, { copy, html, production, serv
     webpack.resolve = webpack.resolve || {};
     webpack.resolve.plugins = webpack.resolve.plugins || [];
 
-    tsconfig = resolve( tsconfig || 'tsconfig.json' );
-
-    return { copy, html, server, tsconfig, webpack: webpack as Configuration };
+    return webpack as Configuration;
 }
 
 
 const config = (base: WebpackConfiguration, options: Options) => {
-    let { copy, html, server, tsconfig, webpack } = normalize(base, options);
+    let { favicon, copy, html, sass, server } = options,
+        webpack = normalize(base, options);
 
     plugins.copy(webpack, copy);
+    plugins.favicon(webpack, favicon);
     plugins.html(webpack, html);
-    plugins.sass(webpack);
+    plugins.sass(webpack, sass);
     plugins.server(webpack, server);
-    plugins.typescript(webpack, tsconfig);
+    plugins.source(webpack);
+    plugins.typescript(webpack, resolve('tsconfig.json'));
 
     return webpack;
 };

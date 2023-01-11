@@ -2,7 +2,7 @@ import { default as HtmlWebpackPlugin } from 'html-webpack-plugin';
 import { Configuration } from '~/types';
 
 
-export default (config: Configuration, options?: HtmlWebpackPlugin.Options) => {
+export default (webpack: Configuration, options?: HtmlWebpackPlugin.Options) => {
     if (!options) {
         return;
     }
@@ -12,7 +12,7 @@ export default (config: Configuration, options?: HtmlWebpackPlugin.Options) => {
     options.meta.favicon = options.meta.favicon || 'storage/images/favicon.ico';
     options.meta.viewport = options.meta.viewport || 'width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimal-ui';
 
-    config.plugins.push(
+    webpack.plugins.push(
         new HtmlWebpackPlugin(options)
     );
 };

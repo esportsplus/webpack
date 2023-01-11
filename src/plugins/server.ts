@@ -2,12 +2,12 @@ import { WebpackConfiguration } from 'webpack-cli';
 import { Configuration } from '~/types';
 
 
-export default (config: Configuration, server?: WebpackConfiguration['devServer'] | boolean) => {
+export default (webpack: Configuration, server?: WebpackConfiguration['devServer'] | boolean) => {
     if (!server) {
         return;
     }
 
-    config.devServer = Object.assign({
+    webpack.devServer = Object.assign({
         client: {
             overlay: false
         },
