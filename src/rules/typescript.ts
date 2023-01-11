@@ -18,13 +18,12 @@ export default (config: Configuration, tsconfig: string) => {
             test: /\.tsx?$/,
             use: 'ts-loader',
             exclude: /node_modules/,
+            options: {
+                configFile: tsconfig
+            },
             resolve: {
                 fullySpecified: false,
             }
-        },
-        {
-            test: /\.txt$/i,
-            use: 'raw-loader',
         }
     );
 
@@ -35,7 +34,7 @@ export default (config: Configuration, tsconfig: string) => {
         new ForkTsCheckerWebpackPlugin()
     );
 
-    config.resolve.extensions = ['.js', '.ts', '.tsx'];
+    config.resolve.extensions = ['.tsx', '.ts', '.js'];
     config.resolve.fullySpecified = false;
     config.resolve.plugins.push(
         new TsconfigPathsPlugin({

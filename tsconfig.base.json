@@ -5,9 +5,9 @@
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "declarationDir": "./build",
+        "esModuleInterop": true,
         "lib": ["dom", "dom.iterable", "esnext"],
-        "module": "ESNext",
-        "moduleResolution": "NodeNext",
+        "moduleResolution": "node",
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "build",
@@ -20,6 +20,6 @@
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "strict": true,
-        "target": "ESNext"
-    },
+        "target": "esnext"
+    }
 }
