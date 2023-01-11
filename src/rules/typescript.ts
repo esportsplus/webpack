@@ -6,21 +6,13 @@ import { Configuration } from '~/types';
 export default (config: Configuration, tsconfig: string) => {
     config.module.rules.push(
         {
-            generator: {
-                dataUrl: (content: any) => {
-                    return content.toString();
-                }
-            },
-            test: /\.(svg)$/i,
-            type: 'asset/inline',
+            test: /\.(svg|txt)$/i,
+            type: 'asset/source',
         },
         {
             test: /\.tsx?$/,
             use: 'ts-loader',
             exclude: /node_modules/,
-            options: {
-                configFile: tsconfig
-            },
             resolve: {
                 fullySpecified: false,
             }

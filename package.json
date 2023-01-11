@@ -24,9 +24,6 @@
         "webpack-dev-server": "^4.11.1"
     },
     "description": "Webpack",
-    "devDependencies": {
-        "@types/rechoir": "^0.6.1"
-    },
     "main": "./build/index.js",
     "name": "@esportsplus/webpack",
     "private": false,
