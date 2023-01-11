@@ -24,11 +24,7 @@ const entry = (pattern: string, { directory, hash }: { directory?: string, hash?
 };
 
 
-export default (webpack: Configuration, use?: boolean) => {
-    if (!use) {
-        return;
-    }
-
+export default (webpack: Configuration) => {
     webpack.module.rules.push({
         test: /\.(c|sc|sa)ss$/,
         use: [

@@ -1,5 +1,5 @@
 import { WebpackConfiguration } from 'webpack-cli';
-import { copy, favicon, html, sass, server } from './plugins';
+import { copy, favicon, html, server } from './plugins';
 
 
 type Configuration = {
@@ -19,7 +19,6 @@ type Options = {
     favicon?: Parameters<typeof favicon>[1];
     html?: Parameters<typeof html>[1];
     production?: boolean | string;
-    sass?: Parameters<typeof sass>[1];
     server?: Parameters<typeof server>[1];
     tsconfig?: string;
 };

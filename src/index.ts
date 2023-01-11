@@ -5,7 +5,7 @@ import plugins from './plugins';
 import resolve from './resolve';
 
 
-function normalize(webpack: WebpackConfiguration, { production }: Options) {
+function normalize(webpack: WebpackConfiguration, { production, tsconfig }: Options) {
     webpack.mode = (`${production}` !== 'false') ? 'production' : 'development';
 
     webpack.module = webpack.module || {};
@@ -22,21 +22,23 @@ function normalize(webpack: WebpackConfiguration, { production }: Options) {
     webpack.resolve = webpack.resolve || {};
     webpack.resolve.plugins = webpack.resolve.plugins || [];
 
-    return webpack as Configuration;
+    tsconfig = resolve( tsconfig || 'tsconfig.json' );
+
+    return { tsconfig, webpack: webpack as Configuration };
 }
 
 
 const config = (base: WebpackConfiguration, options: Options) => {
-    let { favicon, copy, html, sass, server } = options,
-        webpack = normalize(base, options);
+    let { favicon, copy, html, server } = options,
+        { tsconfig, webpack } = normalize(base, options);
 
     plugins.copy(webpack, copy);
     plugins.favicon(webpack, favicon);
     plugins.html(webpack, html);
-    plugins.sass(webpack, sass);
+    plugins.sass(webpack);
     plugins.server(webpack, server);
     plugins.source(webpack);
-    plugins.typescript(webpack, resolve('tsconfig.json'));
+    plugins.typescript(webpack, tsconfig);
 
     return webpack;
 };
