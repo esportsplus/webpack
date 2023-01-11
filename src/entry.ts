@@ -1,9 +1,9 @@
-import glob from 'glob';
+import glob from 'fast-glob';
 import resolve from './resolve';
 
 
 const entry = (pattern: string) => {
-    return glob.sync(resolve(pattern), { nosort: true });
+    return glob.sync(resolve(pattern));
 };
 
 entry.sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: string } = {}) => {
