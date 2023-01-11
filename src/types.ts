@@ -1,5 +1,5 @@
 import { WebpackConfiguration } from 'webpack-cli';
-import { copy, html, server } from './options';
+import { copy, html, server } from './plugins';
 
 
 type Configuration = {
@@ -16,10 +16,10 @@ type Configuration = {
 
 type Options = {
     copy?: Parameters<typeof copy>[1];
-    index?: Parameters<typeof html>[1];
+    html?: Parameters<typeof html>[1];
     production?: boolean | string;
     server?: Parameters<typeof server>[1];
-    tsconfig: string;
+    tsconfig?: string;
 };
 
 

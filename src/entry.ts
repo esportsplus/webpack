@@ -2,33 +2,35 @@ import glob from 'fast-glob';
 import resolve from './resolve';
 
 
-const js = (pattern: string, { hash }: { hash?: boolean }) => {
-    let files = glob.sync( resolve(pattern) );
-
-    if (hash) {
-        return {
-            filename: 'js/[contenthash].js',
-            import: files
-        };
-    }
-
-    return files;
+type Options = {
+    directory: string;
+    extension: string;
+    hash?: boolean;
 };
 
-const sass = (pattern: string, { normalizer, ui }: { normalizer?: boolean, ui?: string } = {}) => {
-    let files = glob.sync( resolve(pattern) );
 
-    // TODO: Instead of build just glob?
-    if (ui !== undefined) {
-        files.push(`@esportsplus/ui/build/css/css-utilities${ui ? `.${ui}` : ''}.css`);
-        files.unshift(`@esportsplus/ui/build/css/components${ui ? `.${ui}` : ''}.css`);
-    }
+function entry(pattern: string, { directory, extension, hash }: Options) {
+    return {
+        filename: `${directory}/[${hash ? 'contenthash' : 'name'}].${extension}`,
+        import: glob.sync( resolve(pattern) )
+    };;
+}
 
-    if (normalizer) {
-        files.unshift('modern-normalize/modern-normalize.css');
-    }
 
-    return files;
+const js = (pattern: string, { directory, hash }: Partial<Omit<Options, 'extension'>>) => {
+    return entry(pattern, {
+        directory: directory || 'js',
+        extension: 'js',
+        hash
+    });
+};
+
+const sass = (pattern: string, { directory, hash }: Partial<Omit<Options, 'extension'>>) => {
+    return entry(pattern, {
+        directory: directory || 'css',
+        extension: 'css',
+        hash
+    });
 };
 
 

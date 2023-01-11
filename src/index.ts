@@ -1,22 +1,47 @@
-import { WebpackConfiguration } from 'webpack-dev-server';
-import { Options } from './types';
-import configuration from './configuration';
+import { WebpackConfiguration } from 'webpack-cli';
+import { Configuration, Options } from './types';
 import entry from './entry';
-import options from './options';
+import plugins from './plugins';
 import resolve from './resolve';
-import rules from './rules';
 
 
-export default (webpack: WebpackConfiguration, { copy, index, production, server, tsconfig }: Options) => {
-    let config = configuration(webpack, production);
+function normalize(webpack: WebpackConfiguration, { copy, html, production, server, tsconfig }: Options) {
+    production = `${production}` !== 'false';
 
-    options.copy(config, copy);
-    options.html(config, index);
-    options.server(config, server);
+    webpack.mode = production ? 'production' : 'development';
 
-    rules.sass(config);
-    rules.typescript(config, resolve(tsconfig));
+    webpack.module = webpack.module || {};
+    webpack.module.rules = webpack.module?.rules || [];
 
-    return config;
+    webpack.optimization = webpack.optimization || {};
+    webpack.optimization.minimize = production;
+
+    webpack.output = webpack.output || {};
+    webpack.output.path = resolve( webpack.output?.path || 'public' );
+
+    webpack.plugins = webpack.plugins || [];
+
+    webpack.resolve = webpack.resolve || {};
+    webpack.resolve.plugins = webpack.resolve.plugins || [];
+
+    tsconfig = resolve( tsconfig || 'tsconfig.json' );
+
+    return { copy, html, server, tsconfig, webpack: webpack as Configuration };
+}
+
+
+const config = (base: WebpackConfiguration, options: Options) => {
+    let { copy, html, server, tsconfig, webpack } = normalize(base, options);
+
+    plugins.copy(webpack, copy);
+    plugins.html(webpack, html);
+    plugins.sass(webpack);
+    plugins.server(webpack, server);
+    plugins.typescript(webpack, tsconfig);
+
+    return webpack;
 };
-export { entry };
+
+
+export default { config, entry };
+export { config, entry };
