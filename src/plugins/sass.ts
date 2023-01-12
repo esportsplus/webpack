@@ -7,13 +7,14 @@ import sass from 'sass';
 import resolve from '~/resolve';
 
 
-const entry = (pattern: string, { hash }: { hash?: boolean } = {}) => {
-    // DO NOT ADD EXTENSION TO FILENAME
-    // - `mini-css-extract-plugin` plugin appends css extension once extracted
-    // - JS files created during bundle are left extensionless
-    // - Makes it easy to cleanup empty js files after build
+// DO NOT ADD EXTENSION TO FILENAME
+// - All files will receive the extension ( including bundled js files )
+// - `mini-css-extract-plugin` plugin appends css extension once extracted
+// - JS files created during bundle are left extensionless
+// - Makes it easy to cleanup empty js files after build
+const entry = (pattern: string, { directory, hash }: { directory?: string, hash?: boolean } = {}) => {
     return {
-        filename: `[${hash ? 'contenthash' : 'name'}]`,
+        filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}]`,
         import: resolve.glob(pattern)
     };
 };
