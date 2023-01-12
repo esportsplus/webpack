@@ -6,8 +6,8 @@
         "declaration": true,
         "esModuleInterop": true,
         "lib": ["dom", "dom.iterable", "esnext"],
-        "module": "esnext",
-        "moduleResolution": "nodenext",
+        "module": "commonjs",
+        "moduleResolution": "node",
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "paths": {
@@ -20,11 +20,5 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "esnext"
-    },
-    "ts-node": {
-        "compilerOptions": {
-            "module": "commonjs",
-            "moduleResolution": "node"
-        }
     }
 }
