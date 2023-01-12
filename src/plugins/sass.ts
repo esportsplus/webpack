@@ -12,9 +12,9 @@ import resolve from '~/resolve';
 // - `mini-css-extract-plugin` plugin appends css extension once extracted
 // - JS files created during bundle are left extensionless
 // - Makes it easy to cleanup empty js files after build
-const entry = (pattern: string, { directory, hash, local }: { directory?: string, hash?: boolean, local?: boolean } = {}) => {
+const entry = (pattern: string, { hash, local }: { hash?: boolean, local?: boolean } = {}) => {
     return {
-        filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}]`,
+        filename: `[${hash ? 'contenthash' : 'name'}]`,
         import: local === false ? pattern : resolve.glob(pattern)
     };
 };

@@ -14,6 +14,10 @@ type Configuration = {
     };
 } & WebpackConfiguration;
 
+interface NestedEntry {
+    [key: string]: NestedEntry | NonNullable< WebpackConfiguration['entry'] >
+};
+
 type Options = {
     copy?: Parameters<typeof copy>[1];
     favicon?: Parameters<typeof favicon>[1];
@@ -24,4 +28,4 @@ type Options = {
 };
 
 
-export { Configuration, Options };
+export { Configuration, NestedEntry, Options, WebpackConfiguration };

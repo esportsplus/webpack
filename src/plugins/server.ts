@@ -1,5 +1,4 @@
-import { WebpackConfiguration } from 'webpack-cli';
-import { Configuration } from '~/types';
+import { Configuration, WebpackConfiguration } from '~/types';
 
 
 export default (webpack: Configuration, server?: WebpackConfiguration['devServer'] | boolean) => {

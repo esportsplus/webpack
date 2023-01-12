@@ -4,9 +4,9 @@ import { Configuration } from '~/types';
 import resolve from '~/resolve';
 
 
-const entry = (pattern: string, { directory, hash, local }: { directory?: string, hash?: boolean, local?: boolean } = {}) => {
+const entry = (pattern: string, { hash, local }: { hash?: boolean, local?: boolean } = {}) => {
     return {
-        filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}].js`,
+        filename: `[${hash ? 'contenthash' : 'name'}].js`,
         import: local === false ? pattern : resolve.glob(pattern)
     };
 };

@@ -1,11 +1,13 @@
-import { WebpackConfiguration } from 'webpack-cli';
-import { Configuration, Options } from './types';
+import { Configuration, NestedEntry, Options, WebpackConfiguration } from './types';
 import entry from './entry';
 import plugins from './plugins';
 import resolve from './resolve';
+import flatten from './flatten';
 
 
 function normalize(webpack: WebpackConfiguration, { production, tsconfig }: Options) {
+    webpack.entry = flatten(webpack.entry);
+
     webpack.mode = (`${production}` !== 'false') ? 'production' : 'development';
 
     webpack.module = webpack.module || {};
@@ -28,7 +30,7 @@ function normalize(webpack: WebpackConfiguration, { production, tsconfig }: Opti
 }
 
 
-const config = (base: WebpackConfiguration, options: Options) => {
+const config = (base: WebpackConfiguration & { entry: NestedEntry }, options: Options) => {
     let { favicon, copy, html, server } = options,
         { tsconfig, webpack } = normalize(base, options);
 
