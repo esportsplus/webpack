@@ -14,8 +14,12 @@ type Configuration = {
     };
 } & WebpackConfiguration;
 
+type CustomWebpackConfiguration = {
+    entry: NestedEntry | WebpackConfiguration['entry']
+} & Omit<WebpackConfiguration, 'entry'>;
+
 interface NestedEntry {
-    [key: string]: NestedEntry | NonNullable< WebpackConfiguration['entry'] >
+    [key: string]: NestedEntry | WebpackConfiguration['entry']
 };
 
 type Options = {
@@ -28,4 +32,4 @@ type Options = {
 };
 
 
-export { Configuration, NestedEntry, Options, WebpackConfiguration };
+export { Configuration, CustomWebpackConfiguration, NestedEntry, Options, WebpackConfiguration };

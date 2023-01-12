@@ -1,8 +1,8 @@
-import { NestedEntry, WebpackConfiguration } from "./types";
+import { CustomWebpackConfiguration, WebpackConfiguration } from "./types";
 
 
-const flatten = (data?: NestedEntry | Awaited< NonNullable< WebpackConfiguration['entry'] > >, prefix: string = '') => {
-    if (typeof data !== 'object' || Array.isArray(data)) {
+const flatten = (data?: CustomWebpackConfiguration['entry'], prefix: string = '') => {
+    if (typeof data !== 'object' || Array.isArray(data) || data?.import !== undefined) {
         return data;
     }
 
