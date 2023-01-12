@@ -15,14 +15,14 @@ function normalize(webpack: WebpackConfiguration, { production, tsconfig }: Opti
     webpack.optimization.minimize = webpack.mode === 'production';
 
     webpack.output = webpack.output || {};
-    webpack.output.path = resolve( webpack.output?.path || 'public' );
+    webpack.output.path = resolve.path( webpack.output?.path || 'public' );
 
     webpack.plugins = webpack.plugins || [];
 
     webpack.resolve = webpack.resolve || {};
     webpack.resolve.plugins = webpack.resolve.plugins || [];
 
-    tsconfig = resolve( tsconfig || 'tsconfig.json' );
+    tsconfig = resolve.path( tsconfig || 'tsconfig.json' );
 
     return { tsconfig, webpack: webpack as Configuration };
 }
@@ -44,5 +44,5 @@ const config = (base: WebpackConfiguration, options: Options) => {
 };
 
 
-export default { config, entry };
-export { config, entry };
+export default { config, entry, resolve };
+export { config, entry, resolve };

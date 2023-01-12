@@ -3,7 +3,6 @@ import { default as MiniCssExtractPlugin } from 'mini-css-extract-plugin';
 import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration } from '~/types';
 import autoprefixer from 'autoprefixer';
-import glob from 'fast-glob';
 import sass from 'sass';
 import resolve from '~/resolve';
 
@@ -19,7 +18,7 @@ const entry = (pattern: string, { directory, hash }: { directory?: string, hash?
     // - Makes it easy to cleanup empty js files after build
     return {
         filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}]`,
-        import: glob.sync( resolve(pattern) )
+        import: resolve.glob(pattern)
     };
 };
 

@@ -1,7 +1,6 @@
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
-import glob from 'fast-glob';
 import resolve from '~/resolve';
 
 
@@ -12,7 +11,7 @@ const entry = (pattern: string, { directory, hash }: { directory?: string, hash?
 
     return {
         filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}].js`,
-        import: glob.sync( resolve(pattern) )
+        import: resolve.glob(pattern)
     };
 };
 
