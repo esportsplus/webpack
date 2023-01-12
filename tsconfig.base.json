@@ -4,7 +4,7 @@
         "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "declaration": true,
-        "declarationDir": "./build",
+        "declarationDir": "build",
         "esModuleInterop": true,
         "lib": ["dom", "dom.iterable", "esnext"],
         "module": "commonjs",

@@ -33,7 +33,7 @@ export default (webpack: Configuration) => {
                 loader: 'css-loader',
                 options: {
                     // Prevents Following Urls To Fonts/Images
-                    url: false,
+                    // url: false,
                     importLoaders: 1
                 }
             },
