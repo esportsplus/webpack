@@ -20,5 +20,10 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "esnext"
+    },
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs"
+        }
     }
 }
