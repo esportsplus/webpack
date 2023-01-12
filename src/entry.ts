@@ -1,5 +1,5 @@
-import { entry as sass } from './plugins/sass';
+import { entry as css } from './plugins/sass';
 import { entry as js } from './plugins/typescript';
 
 
-export default { sass, js };
+export default { css, js };

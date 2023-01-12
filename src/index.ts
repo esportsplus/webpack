@@ -34,6 +34,7 @@ const config = (base: WebpackConfiguration, options: Options) => {
 
     plugins.copy(webpack, copy);
     plugins.favicon(webpack, favicon);
+    plugins.fonts(webpack);
     plugins.html(webpack, html);
     plugins.sass(webpack);
     plugins.server(webpack, server);

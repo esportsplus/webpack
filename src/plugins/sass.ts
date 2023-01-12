@@ -7,67 +7,64 @@ import sass from 'sass';
 import resolve from '~/resolve';
 
 
-const entry = (pattern: string, { directory, hash }: { directory?: string, hash?: boolean } = {}) => {
-    if (directory === undefined) {
-        directory = `css`;
-    }
-
+const entry = (pattern: string, { hash }: { hash?: boolean } = {}) => {
     // DO NOT ADD EXTENSION TO FILENAME
     // - `mini-css-extract-plugin` plugin appends css extension once extracted
     // - JS files created during bundle are left extensionless
     // - Makes it easy to cleanup empty js files after build
     return {
-        filename: `${directory ? `${directory}/` : ''}[${hash ? 'contenthash' : 'name'}]`,
+        filename: `[${hash ? 'contenthash' : 'name'}]`,
         import: resolve.glob(pattern)
     };
 };
 
 
 export default (webpack: Configuration) => {
-    webpack.module.rules.push({
-        test: /\.(c|sc|sa)ss$/,
-        use: [
-            MiniCssExtractPlugin.loader,
-            {
-                loader: 'css-loader',
-                options: {
-                    // Prevents Following Urls To Fonts/Images
-                    // url: false,
-                    importLoaders: 1
-                }
-            },
-            {
-                loader: 'postcss-loader',
-                options: {
-                    postcssOptions: {
-                        plugins: [
-                            autoprefixer()
-                        ]
+    webpack.module.rules.push(
+        {
+            test: /\.(c|sc|sa)ss$/,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1
                     }
-                }
-            },
-            {
-                loader: 'sass-loader',
-                options: {
-                    // Use `dart-sass`
-                    implementation: sass,
                 },
-            },
-        ],
-    });
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugins: [
+                                autoprefixer()
+                            ]
+                        }
+                    }
+                },
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        // Use `dart-sass`
+                        implementation: sass,
+                    },
+                },
+            ],
+        }
+    );
 
     webpack.optimization.minimizer = webpack.optimization.minimizer || [];
     webpack.optimization.minimizer.push(
         new CssMinimizerPlugin()
     );
+    webpack.optimization.removeEmptyChunks = true;
 
     webpack.plugins.push(
         new RemoveEmptyScriptsPlugin({
-            remove: /^(.(?!.*\.css$))*$/g
+            remove: /css\/([^.]*|(.+)\.js)$/
         }),
         new MiniCssExtractPlugin({
             filename: (data: any) => {
-                return `${data?.chunk?.filenameTemplate || `[contenthash]`}.css`;
+                return `${data?.chunk?.filenameTemplate || data?.chunk?.name || '[contenthash]'}.css`;
             }
         })
     );
