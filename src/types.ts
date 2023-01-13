@@ -1,4 +1,5 @@
 import { WebpackConfiguration } from 'webpack-cli';
+import { default as p } from './plugins';
 
 
 type Configuration = {
@@ -14,7 +15,8 @@ type Configuration = {
 } & WebpackConfiguration;
 
 type CustomWebpackConfiguration = {
-    entry: NestedEntry | WebpackConfiguration['entry']
+    entry: NestedEntry | WebpackConfiguration['entry'],
+    use?: (plugins: ReturnType<typeof p>) => void;
 } & Omit<WebpackConfiguration, 'entry'>;
 
 interface NestedEntry {

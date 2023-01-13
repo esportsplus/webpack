@@ -1,43 +1,45 @@
 import { Configuration } from '~/types';
 import copy from './copy';
-import entry from './entry';
 import favicon from './favicon';
 import fonts from './fonts';
 import html from './html';
-import mode from './mode';
 import server from './server';
 import sass from './sass';
 import source from './source';
 import typescript from './typescript';
 
 
-type Fn<T extends (...args: any[]) => void> = (value: Parameters<T>[1]) => void;
+type Fn<F> = F extends (ignore: any, ...args: infer P) => infer R ? (...args: P) => R : never;
 
-type Options = {
+type Plugins = {
     copy: Fn<typeof copy>;
-    entry: Fn<typeof entry>;
     favicon: Fn<typeof favicon>;
-    fonts: VoidFunction;
+    fonts: Fn<typeof fonts>;
     html: Fn<typeof html>;
-    mode: Fn<typeof mode>;
-    sass: VoidFunction;
+    sass: Fn<typeof sass>;
     server: Fn<typeof server>;
-    source: VoidFunction;
+    source: Fn<typeof source>;
     typescript: Fn<typeof typescript>;
 };
 
 
-export default (webpack: Configuration): Options => {
-    return {
-        copy:       (value) => copy(webpack, value),
-        entry:      (value) => entry(webpack, value),
-        favicon:    (value) => favicon(webpack, value),
-        fonts:      (     ) => fonts(webpack),
-        html:       (value) => html(webpack, value),
-        mode:       (value) => mode(webpack, value),
-        sass:       (     ) => sass(webpack),
-        server:     (value) => server(webpack, value),
-        source:     (     ) => source(webpack),
-        typescript: (value) => typescript(webpack, value)
-    };
+let plugins = { copy, favicon, fonts, html, sass, server, source, typescript };
+
+
+export default (webpack: Configuration) => {
+    let methods: any = {},
+        used: Record<string, boolean> = {};
+
+    for (let key of Object.keys(plugins)) {
+        methods[key] = (value: any) => {
+            if (used[key]) {
+                return;
+            }
+
+            plugins[key as keyof Plugins](webpack, value);
+            used[key] = true;
+        };
+    }
+
+    return methods as Plugins;
 };

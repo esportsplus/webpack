@@ -12,7 +12,7 @@ const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) =>
 };
 
 
-export default (webpack: Configuration, tsconfig?: string) => {
+export default (webpack: Configuration) => {
     webpack.module.rules.push(
         {
             test: /\.tsx?$/,
@@ -35,7 +35,6 @@ export default (webpack: Configuration, tsconfig?: string) => {
     webpack.resolve.fullySpecified = false;
     webpack.resolve.plugins.push(
         new TsconfigPathsPlugin({
-            configFile: tsconfig || 'tsconfig.ts',
             extensions: webpack.resolve.extensions
         })
     );
