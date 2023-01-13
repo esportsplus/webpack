@@ -25,7 +25,7 @@ function defaults(webpack: WebpackConfiguration) {
 }
 
 
-const config = (fn: (webpack: WebpackConfiguration, options: ReturnType<typeof plugins>) => WebpackConfiguration) => {
+const config = (fn: (webpack: Configuration, options: ReturnType<typeof plugins>) => void) => {
     let webpack = defaults({});
 
     fn(webpack, plugins(webpack));
