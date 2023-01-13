@@ -1,11 +1,7 @@
 import { Configuration, WebpackConfiguration } from '~/types';
 
 
-export default (webpack: Configuration, server?: WebpackConfiguration['devServer'] | boolean) => {
-    if (!server) {
-        return;
-    }
-
+export default (webpack: Configuration, server?: WebpackConfiguration['devServer']) => {
     webpack.devServer = Object.assign({
         client: {
             overlay: false
@@ -13,5 +9,5 @@ export default (webpack: Configuration, server?: WebpackConfiguration['devServer
         compress: true,
         hot: true,
         open: true
-    }, (typeof server === 'boolean') ? {} : server);
+    }, server || {});
 };

@@ -1,14 +1,11 @@
-import { Configuration, CustomWebpackConfiguration, Options } from './types';
+import { Configuration, WebpackConfiguration } from './types';
 import entry from './entry';
 import plugins from './plugins';
 import resolve from './resolve';
-import flatten from './flatten';
 
 
-function normalize(webpack: CustomWebpackConfiguration, { production, tsconfig }: Options) {
-    webpack.entry = flatten(webpack.entry);
-
-    webpack.mode = (`${production}` !== 'false') ? 'production' : 'development';
+function defaults(webpack: WebpackConfiguration) {
+    webpack.mode = 'production';
 
     webpack.module = webpack.module || {};
     webpack.module.rules = webpack.module?.rules || [];
@@ -24,24 +21,14 @@ function normalize(webpack: CustomWebpackConfiguration, { production, tsconfig }
     webpack.resolve = webpack.resolve || {};
     webpack.resolve.plugins = webpack.resolve.plugins || [];
 
-    tsconfig = resolve.path( tsconfig || 'tsconfig.json' );
-
-    return { tsconfig, webpack: webpack as Configuration };
+    return webpack as Configuration;
 }
 
 
-const config = (base: CustomWebpackConfiguration, options: Options) => {
-    let { favicon, copy, html, server } = options,
-        { tsconfig, webpack } = normalize(base, options);
+const config = (fn: (webpack: WebpackConfiguration, options: ReturnType<typeof plugins>) => WebpackConfiguration) => {
+    let webpack = defaults({});
 
-    plugins.copy(webpack, copy);
-    plugins.favicon(webpack, favicon);
-    plugins.fonts(webpack);
-    plugins.html(webpack, html);
-    plugins.sass(webpack);
-    plugins.server(webpack, server);
-    plugins.source(webpack);
-    plugins.typescript(webpack, tsconfig);
+    fn(webpack, plugins(webpack));
 
     return webpack;
 };
