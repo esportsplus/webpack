@@ -7,7 +7,7 @@ import resolve from '~/resolve';
 const entry = (pattern: string, { hash, local }: { hash?: boolean, local?: boolean } = {}) => {
     return {
         filename: `[${hash ? 'contenthash' : 'name'}].js`,
-        import: local === false ? pattern : resolve.glob(pattern)
+        import: local === false ? [pattern] : resolve.glob(pattern)
     };
 };
 
