@@ -4,10 +4,10 @@ import { Configuration } from '~/types';
 import resolve from '~/resolve';
 
 
-const entry = (pattern: string, { hash, local }: { hash?: boolean, local?: boolean } = {}) => {
+const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
     return {
         filename: `[${hash ? 'contenthash' : 'name'}].js`,
-        import: local === false ? [pattern] : resolve.glob(pattern)
+        import: resolve.glob(pattern)
     };
 };
 

@@ -2,8 +2,15 @@ import p from 'path';
 import g from 'fast-glob';
 
 
-const glob = (pattern: string) => {
-    return g.sync( path(pattern) );
+const glob = (pattern: string | string[]) => {
+    if (Array.isArray(pattern)) {
+        pattern = `{${pattern.join(',')}}`;
+    }
+    else if (!g.isDynamicPattern(pattern)) {
+        return pattern;
+    }
+
+    return g.sync(pattern);
 };
 
 const path = (pattern: string) => {
