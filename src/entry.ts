@@ -11,12 +11,16 @@ function recursive(data: EntryObject, prefix: string = '') {
         let value: any = data[key];
 
         if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-            Object.assign(output, recursive(value, `${path}${key}`));
+            if (value?.filename === undefined) {
+                Object.assign(output, recursive(value, `${path}${key}`));
+                continue;
+            }
+            else {
+                value.filename = `${path}${value.filename}`;
+            }
         }
-        else {
-            value.filename = `${path}${value.filename}`;
-            output[`${path}${key}`] = value;
-        }
+
+        output[`${path}${key}`] = value;
     }
 
     return output;
