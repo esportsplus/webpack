@@ -1,13 +1,13 @@
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
-import resolve from '~/resolve';
+import path from '~/path';
 
 
 const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
     return {
         filename: `[${hash ? 'contenthash' : 'name'}].js`,
-        import: resolve.glob(pattern)
+        import: path.resolve(pattern)
     };
 };
 

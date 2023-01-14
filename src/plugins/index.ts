@@ -1,5 +1,4 @@
 import { Configuration } from '~/types';
-import copy from './copy';
 import favicon from './favicon';
 import fonts from './fonts';
 import html from './html';
@@ -12,7 +11,6 @@ import typescript from './typescript';
 type Fn<F> = F extends (ignore: any, ...args: infer P) => infer R ? (...args: P) => R : never;
 
 type Plugins = {
-    copy: Fn<typeof copy>;
     favicon: Fn<typeof favicon>;
     fonts: Fn<typeof fonts>;
     html: Fn<typeof html>;
@@ -23,7 +21,7 @@ type Plugins = {
 };
 
 
-let plugins = { copy, favicon, fonts, html, sass, server, source, typescript };
+let plugins = { favicon, fonts, html, sass, server, source, typescript };
 
 
 export default (webpack: Configuration) => {

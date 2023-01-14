@@ -1,12 +1,8 @@
 import entry from './entry';
 import config from './config';
-import resolve from './resolve';
+import mode from './mode';
+import path from './path';
 
 
-const mode = (production?: boolean | string) => {
-    return (`${production}` !== 'false') ? 'production' : 'development';
-};
-
-
-export default { config, entry, mode, resolve };
-export { config, entry, mode, resolve };
+export default { config, entry, mode, path };
+export { config, entry, mode, path };

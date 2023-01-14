@@ -4,10 +4,10 @@ import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-script
 import { Configuration } from '~/types';
 import autoprefixer from 'autoprefixer';
 import sass from 'sass';
-import resolve from '~/resolve';
+import path from '~/path';
 
 
-// DO NOT ADD EXTENSION TO FILENAME
+// DO NOT ADD EXTENSION TO 'filename'
 // - All files will receive the extension ( including bundled js files )
 // - `mini-css-extract-plugin` plugin appends css extension once extracted
 // - JS files created during bundle are left extensionless
@@ -15,7 +15,7 @@ import resolve from '~/resolve';
 const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
     return {
         filename: `[${hash ? 'contenthash' : 'name'}]`,
-        import: resolve.glob(pattern)
+        import: path.resolve(pattern)
     };
 };
 

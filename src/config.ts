@@ -1,7 +1,7 @@
 import { Configuration, CustomWebpackConfiguration } from './types';
 import { flatten } from './entry';
 import plugins from './plugins';
-import resolve from './resolve';
+import path from 'path';
 
 
 function parse(webpack: CustomWebpackConfiguration) {
@@ -18,7 +18,7 @@ function parse(webpack: CustomWebpackConfiguration) {
     webpack.optimization.minimize = webpack.mode === 'production';
 
     webpack.output = webpack.output || {};
-    webpack.output.path = resolve.path( webpack.output?.path || 'public' );
+    webpack.output.path = path.resolve( webpack.output?.path || 'public' );
 
     webpack.plugins = webpack.plugins || [];
 
@@ -34,7 +34,7 @@ function parse(webpack: CustomWebpackConfiguration) {
 
 
 const config = (base: CustomWebpackConfiguration) => {
-    let { webpack, use } = parse(base);
+    let { use, webpack } = parse(base);
 
     if (use) {
         use( plugins(webpack) );
