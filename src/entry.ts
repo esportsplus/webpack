@@ -1,28 +1,34 @@
-import { CustomWebpackConfiguration } from "~/types";
+import { CustomWebpackConfiguration, EntryObject } from "~/types";
 import { entry as css } from './plugins/sass';
 import { entry as js } from './plugins/typescript';
 
 
-const flatten = (data: CustomWebpackConfiguration['entry'], prefix: string = '') => {
-    if (typeof data !== 'object' || Array.isArray(data) || data?.import !== undefined) {
-        return data;
-    }
-
-    var path = (prefix) ? `${prefix}/` : '',
+function recursive(data: EntryObject, prefix: string = '') {
+    var path = prefix ? `${prefix}/` : '',
         output: any = {};
 
     for (var key in data) {
         let value: any = data[key];
 
-        if (typeof value === 'object' && value?.import === undefined) {
-            Object.assign(output, flatten(value, `${path}${key}`));
+        if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+            Object.assign(output, recursive(value, `${path}${key}`));
         }
         else {
-            output[`${path}${key}`] = data[key];
+            value.filename = `${path}${value.filename}`;
+            output[`${path}${key}`] = value;
         }
     }
 
     return output;
+}
+
+
+const flatten = (data: CustomWebpackConfiguration['entry']) => {
+    if (typeof data === 'object' && !Array.isArray(data) && data !== null) {
+        return recursive(data as EntryObject);
+    }
+
+    return data;
 }
 
 

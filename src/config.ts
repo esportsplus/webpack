@@ -29,7 +29,7 @@ function parse(webpack: CustomWebpackConfiguration) {
 
     delete webpack.use;
 
-    return { webpack: webpack as Configuration, use };
+    return { use, webpack: webpack as Configuration };
 }
 
 

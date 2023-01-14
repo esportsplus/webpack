@@ -1,3 +1,4 @@
+import { EntryObject } from 'webpack';
 import { WebpackConfiguration } from 'webpack-cli';
 import { default as p } from './plugins';
 
@@ -24,4 +25,4 @@ interface NestedEntry {
 };
 
 
-export { Configuration, CustomWebpackConfiguration, NestedEntry, WebpackConfiguration };
+export { Configuration, CustomWebpackConfiguration, EntryObject, NestedEntry, WebpackConfiguration };
