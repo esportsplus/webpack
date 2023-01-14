@@ -15,7 +15,7 @@ function recursive(data: EntryObject, prefix: string = '') {
                 Object.assign(output, recursive(value, `${path}${key}`));
                 continue;
             }
-            else if (value.filename.indexOf('[contenthash]') !== -1) {
+            else if (value.filename.indexOf('[name]') === -1) {
                 value.filename = `${path}${value.filename}`;
             }
         }
