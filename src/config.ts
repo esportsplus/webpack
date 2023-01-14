@@ -1,7 +1,7 @@
 import { Configuration, CustomWebpackConfiguration } from './types';
 import { flatten } from './entry';
 import plugins from './plugins';
-import path from 'path';
+import path from 'node:path';
 
 
 function parse(webpack: CustomWebpackConfiguration) {
