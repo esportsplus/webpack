@@ -53,7 +53,6 @@ export default (webpack: Configuration) => {
         }
     );
 
-    webpack.optimization.minimizer = webpack.optimization.minimizer || [];
     webpack.optimization.minimizer.push(
         new CssMinimizerPlugin()
     );

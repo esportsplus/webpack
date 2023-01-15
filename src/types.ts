@@ -7,7 +7,9 @@ type Configuration = {
     module: {
         rules: NonNullable< NonNullable<WebpackConfiguration['module']>['rules'] >
     };
-    optimization: NonNullable< WebpackConfiguration['optimization'] >;
+    optimization: {
+        minimizer: NonNullable< NonNullable< WebpackConfiguration['optimization'] >['minimizer'] >
+    };
     output: NonNullable< WebpackConfiguration['output'] >;
     plugins: NonNullable< WebpackConfiguration['plugins'] >;
     resolve: {

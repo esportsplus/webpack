@@ -16,6 +16,7 @@ function parse(webpack: CustomWebpackConfiguration) {
 
     webpack.optimization = webpack.optimization || {};
     webpack.optimization.minimize = webpack.mode === 'production';
+    webpack.optimization.minimizer = webpack.optimization.minimizer || [];
 
     webpack.output = webpack.output || {};
     webpack.output.path = path.resolve( webpack.output?.path || 'public' );
@@ -66,6 +67,7 @@ config.typescript = (base: CustomWebpackConfiguration) => {
         }
 
         plugins.fonts();
+        plugins.json();
         plugins.server();
         plugins.source();
         plugins.typescript();
