@@ -9,11 +9,11 @@ export default (webpack: Configuration) => {
 
     webpack.module.rules.push(
         {
-            test: /\.(json)$/,
-            type: 'asset/resource',
             generator: {
                 filename: 'json/[contenthash][ext]'
-            }
+            },
+            test: /\.json$/,
+            type: 'asset/resource'
         }
     );
 };

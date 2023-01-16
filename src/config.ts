@@ -69,7 +69,10 @@ config.typescript = (base: CustomWebpackConfiguration) => {
         plugins.fonts();
         plugins.json();
         plugins.server();
-        plugins.source();
+        plugins.svg({
+            inline: 'storage/svg'
+        });
+        plugins.txt();
         plugins.typescript();
     };
 
