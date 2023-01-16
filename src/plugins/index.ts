@@ -2,6 +2,7 @@ import { Configuration } from '~/types';
 import favicon from './favicon';
 import fonts from './fonts';
 import html from './html';
+import images from './images';
 import json from './json';
 import server from './server';
 import sass from './sass';
@@ -16,6 +17,7 @@ type Plugins = {
     favicon: Fn<typeof favicon>;
     fonts: Fn<typeof fonts>;
     html: Fn<typeof html>;
+    images: Fn<typeof images>;
     json: Fn<typeof json>;
     sass: Fn<typeof sass>;
     server: Fn<typeof server>;
@@ -25,7 +27,7 @@ type Plugins = {
 };
 
 
-let plugins = { favicon, fonts, html, json, sass, server, svg, txt, typescript };
+let plugins = { favicon, fonts, html, images, json, sass, server, svg, txt, typescript };
 
 
 export default (webpack: Configuration) => {

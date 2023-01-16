@@ -7,13 +7,11 @@ export default (webpack: Configuration) => {
         new JsonMinimizerPlugin()
     );
 
-    webpack.module.rules.push(
-        {
-            generator: {
-                filename: 'json/[contenthash][ext]'
-            },
-            test: /\.json$/,
-            type: 'asset/resource'
-        }
-    );
+    webpack.module.rules.push({
+        generator: {
+            filename: 'json/[contenthash][ext]'
+        },
+        test: /\.json$/,
+        type: 'asset/resource'
+    });
 };

@@ -14,10 +14,10 @@ export default (webpack: Configuration, { inline }: { inline?: string | string[]
     }
 
     webpack.module.rules.push({
+        exclude: paths,
         generator: {
             filename: 'images/[contenthash][ext]'
         },
-        exclude: paths,
         test: /.svg$/,
         type: 'asset/resource'
     });
