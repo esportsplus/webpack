@@ -7,7 +7,7 @@ export default (webpack: Configuration, options: { manifest?: string, prefix?: s
         new FaviconsWebpackPlugin({
             logo: options.svg,
             manifest: options?.manifest,
-            prefix: options?.prefix || '/'
+            prefix: options?.prefix || './'
         })
     );
 };
