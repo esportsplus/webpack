@@ -11,7 +11,8 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "paths": {
-            "~/*": ["src/*"]
+            "~/*": ["src/*"],
+            "~/storage/*": ["storage/*"]
         },
         "removeComments": true,
         "resolveJsonModule": true,
