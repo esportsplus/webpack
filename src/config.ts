@@ -66,9 +66,20 @@ config.library = function(base: Exclude<CustomWebpackConfiguration, EntryObject>
 };
 
 config.node = (base: CustomWebpackConfiguration) => {
+    let previous = base.use;
+
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
     base.target = 'node';
+
+    base.use = (plugins) => {
+        if (previous) {
+            previous(plugins);
+        }
+
+        plugins.sass();
+        plugins.typescript({ transpileOnly: false });
+    };
 
     return config.typescript(base);
 };
@@ -83,6 +94,7 @@ config.web = (base: CustomWebpackConfiguration) => {
         }
 
         plugins.sass();
+        plugins.typescript();
     };
 
     return config.typescript(base);
@@ -104,7 +116,6 @@ config.typescript = (base: CustomWebpackConfiguration) => {
             inline: 'storage/svg'
         });
         plugins.txt();
-        plugins.typescript();
     };
 
     return config(base);

@@ -12,12 +12,15 @@ const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) =>
 };
 
 
-export default (webpack: Configuration) => {
+export default (webpack: Configuration, { transpileOnly }: { transpileOnly?: boolean } = {}) => {
     webpack.module.rules.push(
         {
             test: /\.tsx?$/,
-            use: 'ts-loader',
             exclude: /node_modules/,
+            loader: 'ts-loader',
+            options: {
+                transpileOnly
+            },
             resolve: {
                 fullySpecified: false,
             }
