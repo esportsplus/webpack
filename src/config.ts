@@ -70,6 +70,8 @@ config.node = (base: CustomWebpackConfiguration) => {
 
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
+    base.output = base.output || {};
+    base.output.path = base.output?.path || 'build';
     base.target = 'node';
 
     base.use = (plugins) => {
