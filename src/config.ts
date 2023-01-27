@@ -1,5 +1,6 @@
 import { Configuration, CustomWebpackConfiguration } from './types';
 import { flatten } from './entry';
+import externals from 'webpack-node-externals';
 import plugins from './plugins';
 import path from 'node:path';
 
@@ -44,9 +45,18 @@ const config = (base: CustomWebpackConfiguration) => {
     return webpack;
 };
 
+config.node = (base: CustomWebpackConfiguration) => {
+    base.externals = [ externals() ];
+    base.externalsPresets = { node: true };
+    base.target = 'node';
+
+    return config.typescript(base);
+};
+
 config.web = (base: CustomWebpackConfiguration) => {
     let previous = base.use;
 
+    base.target = 'web';
     base.use = (plugins) => {
         if (previous) {
             previous(plugins);
