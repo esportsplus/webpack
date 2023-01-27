@@ -1,4 +1,4 @@
-import { Configuration, CustomWebpackConfiguration } from './types';
+import { Configuration, CustomWebpackConfiguration, EntryObject } from './types';
 import { flatten } from './entry';
 import externals from 'webpack-node-externals';
 import plugins from './plugins';
@@ -43,6 +43,25 @@ const config = (base: CustomWebpackConfiguration) => {
     }
 
     return webpack;
+};
+
+config.library = function(base: Exclude<CustomWebpackConfiguration, EntryObject>) {
+    base.entry = {
+        'index': base.entry
+    };
+    base.output = base.output || {};
+    base.output.path = base.output?.path || 'build';
+
+    let web = structuredClone(base);
+
+    web.entry = {
+        'index.browser': base.entry
+    };
+
+    return [
+        this.node(base),
+        this.web(web)
+    ];
 };
 
 config.node = (base: CustomWebpackConfiguration) => {
