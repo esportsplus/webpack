@@ -46,20 +46,21 @@ const config = (base: CustomWebpackConfiguration) => {
 };
 
 config.library = function(base: Exclude<CustomWebpackConfiguration, EntryObject>) {
-    base.entry = {
-        'index': base.entry
-    };
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
 
-    let web = structuredClone(base);
+    let node = structuredClone(base),
+        web = structuredClone(base);
 
+    node.entry = {
+        index: base.entry
+    };
     web.entry = {
         'index.browser': base.entry
     };
 
     return [
-        this.node(base),
+        this.node(node),
         this.web(web)
     ];
 };
