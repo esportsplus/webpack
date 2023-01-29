@@ -1,4 +1,4 @@
-import { Configuration, CustomWebpackConfiguration } from './types';
+import { Configuration, CustomWebpackConfiguration, EntryObject } from './types';
 import { flatten } from './entry';
 import externals from 'webpack-node-externals';
 import plugins from './plugins';
@@ -48,7 +48,7 @@ const config = (base: CustomWebpackConfiguration) => {
     return webpack;
 };
 
-config.library = (base: CustomWebpackConfiguration) => {
+config.library = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Exclude<CustomWebpackConfiguration['entry'], EntryObject> }) => {
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
 
@@ -63,21 +63,17 @@ config.library = (base: CustomWebpackConfiguration) => {
     };
 
     return [
-        config.node(node),
-        config.web(web)
+        config.node(node as Parameters<typeof config.node>[0]),
+        config.web(web as Parameters<typeof config.web>[0])
     ];
 };
 
-config.node = (base: CustomWebpackConfiguration) => {
+config.node = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: EntryObject }) => {
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
 
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
-
-    if (typeof base.entry !== 'object') {
-        base.output.filename = 'index.js';
-    }
 
     base.target = 'node';
 
@@ -95,13 +91,9 @@ config.node = (base: CustomWebpackConfiguration) => {
     return config.typescript(base);
 };
 
-config.web = (base: CustomWebpackConfiguration) => {
+config.web = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: EntryObject }) => {
     base.output = base.output || {};
     base.output.path = base.output?.path || 'public';
-
-    if (typeof base.entry !== 'object') {
-        base.output.filename = 'index.js';
-    }
 
     base.target = 'web';
 
