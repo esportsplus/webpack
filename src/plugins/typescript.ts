@@ -3,7 +3,6 @@ import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
 import path from '~/path';
 
-
 const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
     return {
         filename: `[${hash ? 'contenthash' : 'name'}].js`,
@@ -12,15 +11,13 @@ const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) =>
 };
 
 
-export default (webpack: Configuration, { transpileOnly }: { transpileOnly?: boolean } = {}) => {
+export default (webpack: Configuration, options: { transpileOnly?: boolean } = {}) => {
     webpack.module.rules.push(
         {
             test: /\.tsx?$/,
             exclude: /node_modules/,
             loader: 'ts-loader',
-            options: {
-                transpileOnly
-            },
+            options,
             resolve: {
                 fullySpecified: false,
             }

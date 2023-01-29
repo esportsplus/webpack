@@ -4,7 +4,7 @@ import fonts from './fonts';
 import html from './html';
 import images from './images';
 import json from './json';
-import node from './node';
+import polyfill from './polyfill';
 import server from './server';
 import sass from './sass';
 import txt from './txt';
@@ -12,40 +12,44 @@ import svg from './svg';
 import typescript from './typescript';
 
 
-type Fn<F> = F extends (ignore: any, ...args: infer P) => infer R ? (...args: P) => R : never;
+type Function = (...args: any[]) => void;
 
-type Plugins = {
-    favicon: Fn<typeof favicon>;
-    fonts: Fn<typeof fonts>;
-    html: Fn<typeof html>;
-    images: Fn<typeof images>;
-    json: Fn<typeof json>;
-    node: Fn<typeof node>;
-    sass: Fn<typeof sass>;
-    server: Fn<typeof server>;
-    svg: Fn<typeof svg>;
-    txt: Fn<typeof txt>;
-    typescript: Fn<typeof typescript>;
+type Infer<T> =
+    T extends NestedFunction
+        ? { [K in keyof T]: Infer<T[K]> }
+        : T extends (_: any, ...args: infer A) => infer R
+            ? (...args: A) => R
+            : never;
+
+interface NestedFunction {
+    [key: string]: Function | NestedFunction
 };
 
 
-let plugins = { favicon, fonts, html, images, json, node, sass, server, svg, txt, typescript };
+let plugins = { favicon, fonts, html, images, json, polyfill, sass, server, svg, txt, typescript };
 
 
-export default (webpack: Configuration) => {
-    let methods: any = {},
-        used: Record<string, boolean> = {};
+function factory(methods: any, nested: NestedFunction, prefix: string, used: Record<string, boolean>, webpack: Configuration) {
+    for (let key in nested) {
+        let plugin = nested[key];
 
-    for (let key of Object.keys(plugins)) {
-        methods[key] = (value: any) => {
-            if (used[key]) {
-                return;
-            }
+        if (typeof plugin === 'function') {
+            methods[key] = (value: any) => {
+                if (used[`${prefix}${key}`]) {
+                    return;
+                }
 
-            plugins[key as keyof Plugins](webpack, value);
-            used[key] = true;
-        };
+                (plugin as Function)(webpack, value);
+                used[`${prefix}${key}`] = true;
+            };
+        }
+        else {
+            factory((methods[key] = {}), plugin[key] as NestedFunction, `${key}.`, used, webpack);
+        }
     }
 
-    return methods as Plugins;
-};
+    return methods;
+}
+
+
+export default (webpack: Configuration) => factory({}, plugins, '', {}, webpack) as Infer<typeof plugins>;

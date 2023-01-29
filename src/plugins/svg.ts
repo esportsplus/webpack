@@ -2,8 +2,9 @@ import { Configuration } from '~/types';
 import path from 'node:path';
 
 
-export default (webpack: Configuration, { inline }: { inline?: string | string[] } = {}) => {
-    let paths = [];
+export default (webpack: Configuration, options: { inline?: string | string[] } = {}) => {
+    let { inline } = options,
+        paths = [];
 
     if (inline) {
         inline = Array.isArray(inline) ? inline : [inline];
@@ -13,18 +14,19 @@ export default (webpack: Configuration, { inline }: { inline?: string | string[]
         }
     }
 
-    webpack.module.rules.push({
-        exclude: paths,
-        generator: {
-            filename: 'images/[contenthash][ext]'
+    webpack.module.rules.push(
+        {
+            exclude: paths,
+            generator: {
+                filename: 'images/[contenthash][ext]'
+            },
+            test: /.svg$/,
+            type: 'asset/resource'
         },
-        test: /.svg$/,
-        type: 'asset/resource'
-    });
-
-    webpack.module.rules.push({
-        include: paths,
-        test: /.svg$/,
-        type: 'asset/source',
-    });
+        {
+            include: paths,
+            test: /.svg$/,
+            type: 'asset/source',
+        }
+    );
 };

@@ -3,7 +3,7 @@ import { ProvidePlugin } from 'webpack';
 import { Configuration } from '~/types';
 
 
-export default (webpack: Configuration) => {
+const node = (webpack: Configuration) => {
     webpack.plugins.push(
         new NodePolyfillPlugin(),
         new ProvidePlugin({
@@ -12,3 +12,6 @@ export default (webpack: Configuration) => {
         })
     );
 };
+
+
+export default { node };

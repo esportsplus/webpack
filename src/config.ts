@@ -20,7 +20,10 @@ function parse(webpack: CustomWebpackConfiguration) {
     webpack.optimization.minimizer = webpack.optimization.minimizer || [];
 
     webpack.output = webpack.output || {};
-    webpack.output.path = path.resolve( webpack.output?.path || 'public' );
+
+    if (webpack.output?.path) {
+        webpack.output.path = path.resolve( webpack.output.path );
+    }
 
     webpack.plugins = webpack.plugins || [];
 
@@ -45,7 +48,7 @@ const config = (base: CustomWebpackConfiguration) => {
     return webpack;
 };
 
-config.library = function(base: Exclude<CustomWebpackConfiguration, EntryObject>) {
+config.library = (base: Exclude<CustomWebpackConfiguration, EntryObject>) => {
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
 
@@ -60,19 +63,21 @@ config.library = function(base: Exclude<CustomWebpackConfiguration, EntryObject>
     };
 
     return [
-        this.node(node),
-        this.web(web)
+        config.node(node),
+        config.web(web)
     ];
 };
 
 config.node = (base: CustomWebpackConfiguration) => {
-    let previous = base.use;
-
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
+
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
+
     base.target = 'node';
+
+    let previous = base.use;
 
     base.use = (plugins) => {
         if (previous) {
@@ -87,9 +92,13 @@ config.node = (base: CustomWebpackConfiguration) => {
 };
 
 config.web = (base: CustomWebpackConfiguration) => {
-    let previous = base.use;
+    base.output = base.output || {};
+    base.output.path = base.output?.path || 'public';
 
     base.target = 'web';
+
+    let previous = base.use;
+
     base.use = (plugins) => {
         if (previous) {
             previous(plugins);
