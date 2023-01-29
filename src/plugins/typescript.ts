@@ -24,8 +24,8 @@ export default (webpack: Configuration, options: { transpileOnly?: boolean } = {
         }
     );
 
-    webpack.optimization.mangleWasmImports = webpack.mode === 'production';
-    webpack.optimization.usedExports = webpack.mode === 'production';
+    webpack.optimization.mangleWasmImports = webpack.optimization?.mangleWasmImports || webpack.mode === 'production';
+    webpack.optimization.usedExports = webpack.optimization?.usedExports || webpack.mode === 'production';
 
     webpack.plugins.push(
         new ForkTsCheckerWebpackPlugin()

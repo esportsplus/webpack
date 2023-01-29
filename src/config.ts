@@ -5,6 +5,9 @@ import plugins from './plugins';
 import path from 'node:path';
 
 
+type StrictWebpackConfiguration = Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> };
+
+
 function parse(webpack: CustomWebpackConfiguration) {
     webpack.entry = flatten(webpack.entry);
 
@@ -49,6 +52,9 @@ const config = (base: CustomWebpackConfiguration) => {
 };
 
 config.library = (base: CustomWebpackConfiguration) => {
+    base.optimization = base.optimization || {};
+    base.optimization.usedExports = base.optimization?.usedExports || false;
+
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
 
@@ -68,7 +74,7 @@ config.library = (base: CustomWebpackConfiguration) => {
     ];
 };
 
-config.node = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> }) => {
+config.node = (base: StrictWebpackConfiguration) => {
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
 
@@ -91,7 +97,7 @@ config.node = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record
     return config.typescript(base);
 };
 
-config.web = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> }) => {
+config.web = (base: StrictWebpackConfiguration) => {
     base.output = base.output || {};
     base.output.path = base.output?.path || 'public';
 
@@ -104,31 +110,22 @@ config.web = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<
             previous(plugins);
         }
 
+        plugins.fonts();
+        plugins.images();
+        plugins.json();
         plugins.sass();
+        plugins.server();
+        plugins.svg({
+            inline: 'storage/svg'
+        });
+        plugins.txt();
         plugins.typescript();
     };
 
     return config.typescript(base);
 };
 
-config.typescript = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> }) => {
-    let previous = base.use;
-
-    base.use = (plugins) => {
-        if (previous) {
-            previous(plugins);
-        }
-
-        plugins.fonts();
-        plugins.images();
-        plugins.json();
-        plugins.server();
-        plugins.svg({
-            inline: 'storage/svg'
-        });
-        plugins.txt();
-    };
-
+config.typescript = (base: StrictWebpackConfiguration) => {
     return config(base);
 };
 
