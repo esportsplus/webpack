@@ -48,12 +48,12 @@ const config = (base: CustomWebpackConfiguration) => {
     return webpack;
 };
 
-config.library = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Exclude<CustomWebpackConfiguration['entry'], EntryObject> }) => {
+config.library = (base: CustomWebpackConfiguration) => {
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
 
-    let node = structuredClone(base),
-        web = structuredClone(base);
+    let node: any = structuredClone(base),
+        web: any = structuredClone(base);
 
     node.entry = {
         index: base.entry
@@ -63,12 +63,12 @@ config.library = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Exc
     };
 
     return [
-        config.node(node as Parameters<typeof config.node>[0]),
-        config.web(web as Parameters<typeof config.web>[0])
+        config.node(node),
+        config.web(web)
     ];
 };
 
-config.node = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: EntryObject }) => {
+config.node = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> }) => {
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
 
@@ -91,7 +91,7 @@ config.node = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: EntryO
     return config.typescript(base);
 };
 
-config.web = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: EntryObject }) => {
+config.web = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> }) => {
     base.output = base.output || {};
     base.output.path = base.output?.path || 'public';
 
@@ -111,7 +111,7 @@ config.web = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: EntryOb
     return config.typescript(base);
 };
 
-config.typescript = (base: CustomWebpackConfiguration) => {
+config.typescript = (base: Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> }) => {
     let previous = base.use;
 
     base.use = (plugins) => {
