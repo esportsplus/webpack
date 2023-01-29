@@ -33,19 +33,19 @@ function factory(methods: any, nested: NestedFunction, prefix: string, used: Rec
     for (let key in nested) {
         let plugin = nested[key];
 
-        if (typeof plugin === 'function') {
-            methods[key] = (value: any) => {
-                if (used[`${prefix}${key}`]) {
-                    return;
-                }
-
-                (plugin as Function)(webpack, value);
-                used[`${prefix}${key}`] = true;
-            };
-        }
-        else {
+        if (typeof plugin !== 'function') {
             factory((methods[key] = {}), plugin[key] as NestedFunction, `${key}.`, used, webpack);
+            continue;
         }
+
+        methods[key] = (value: any) => {
+            if (used[`${prefix}${key}`]) {
+                return;
+            }
+
+            (plugin as Function)(webpack, value);
+            used[`${prefix}${key}`] = true;
+        };
     }
 
     return methods;
