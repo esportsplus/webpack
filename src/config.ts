@@ -51,29 +51,6 @@ const config = (base: CustomWebpackConfiguration) => {
     return webpack;
 };
 
-config.library = (base: CustomWebpackConfiguration) => {
-    base.optimization = base.optimization || {};
-    base.optimization.usedExports = base.optimization?.usedExports || false;
-
-    base.output = base.output || {};
-    base.output.path = base.output?.path || 'build';
-
-    let node: any = structuredClone(base),
-        web: any = structuredClone(base);
-
-    node.entry = {
-        index: base.entry
-    };
-    web.entry = {
-        'index.browser': base.entry
-    };
-
-    return [
-        config.node(node),
-        config.web(web)
-    ];
-};
-
 config.node = (base: StrictWebpackConfiguration) => {
     base.externals = [ externals() ];
     base.externalsPresets = { node: true };
