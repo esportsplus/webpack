@@ -26,5 +26,7 @@ interface NestedEntry {
     [key: string]: NestedEntry | WebpackConfiguration['entry']
 };
 
+type StrictWebpackConfiguration = Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> };
 
-export { Configuration, CustomWebpackConfiguration, EntryObject, NestedEntry, WebpackConfiguration };
+
+export { Configuration, CustomWebpackConfiguration, EntryObject, NestedEntry, StrictWebpackConfiguration, WebpackConfiguration };

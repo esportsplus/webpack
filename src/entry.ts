@@ -1,5 +1,5 @@
 import { CustomWebpackConfiguration, EntryObject } from "~/types";
-import { entry as css } from './plugins/sass';
+import { entry as css } from './plugins/web/sass';
 import { entry as js } from './plugins/typescript';
 
 

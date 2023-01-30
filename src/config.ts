@@ -1,58 +1,45 @@
-import { Configuration, CustomWebpackConfiguration, EntryObject } from './types';
+import { Configuration, CustomWebpackConfiguration, StrictWebpackConfiguration } from './types';
 import { flatten } from './entry';
-import externals from 'webpack-node-externals';
 import plugins from './plugins';
 import path from 'node:path';
 
 
-type StrictWebpackConfiguration = Omit<CustomWebpackConfiguration, 'entry'> & { entry: Record<string, EntryObject> };
-
-
-function parse(webpack: CustomWebpackConfiguration) {
-    webpack.entry = flatten(webpack.entry);
-
-    if (!['production', 'development'].includes(webpack.mode || '')) {
-        webpack.mode = 'production';
-    }
-
-    webpack.module = webpack.module || {};
-    webpack.module.rules = webpack.module?.rules || [];
-
-    webpack.optimization = webpack.optimization || {};
-    webpack.optimization.minimize = webpack.mode === 'production';
-    webpack.optimization.minimizer = webpack.optimization.minimizer || [];
-
-    webpack.output = webpack.output || {};
-
-    if (webpack.output?.path) {
-        webpack.output.path = path.resolve( webpack.output.path );
-    }
-
-    webpack.plugins = webpack.plugins || [];
-
-    webpack.resolve = webpack.resolve || {};
-    webpack.resolve.plugins = webpack.resolve.plugins || [];
-
-    let use = webpack.use;
-
-    delete webpack.use;
-
-    return { use, webpack: webpack as Configuration };
-}
-
-
 const config = (base: CustomWebpackConfiguration) => {
-    let { use, webpack } = parse(base);
+    base.entry = flatten(base.entry);
 
-    if (use) {
-        use( plugins(webpack) );
+    if (!['production', 'development'].includes(base.mode || '')) {
+        base.mode = 'production';
     }
 
-    return webpack;
+    base.module = base.module || {};
+    base.module.rules = base.module?.rules || [];
+
+    base.optimization = base.optimization || {};
+    base.optimization.minimize = base.mode === 'production';
+    base.optimization.minimizer = base.optimization.minimizer || [];
+
+    base.output = base.output || {};
+
+    if (base.output?.path) {
+        base.output.path = path.resolve( base.output.path );
+    }
+
+    base.plugins = base.plugins || [];
+
+    base.resolve = base.resolve || {};
+    base.resolve.plugins = base.resolve.plugins || [];
+
+    if (base.use) {
+        base.use( plugins(base as Configuration) );
+        delete base.use;
+    }
+
+    return base as Configuration;
 };
 
 config.node = (base: StrictWebpackConfiguration) => {
-    base.externals = [ externals() ];
+    // IMPORTANT!
+    // - We're bundling node server apps with modules until es module support is better
     base.externalsPresets = { node: true };
 
     base.output = base.output || {};
@@ -67,11 +54,10 @@ config.node = (base: StrictWebpackConfiguration) => {
             previous(plugins);
         }
 
-        plugins.sass();
-        plugins.typescript({ transpileOnly: false });
+        plugins.typescript();
     };
 
-    return config.typescript(base);
+    return config(base);
 };
 
 config.web = (base: StrictWebpackConfiguration) => {
@@ -87,22 +73,19 @@ config.web = (base: StrictWebpackConfiguration) => {
             previous(plugins);
         }
 
-        plugins.fonts();
-        plugins.images();
-        plugins.json();
-        plugins.sass();
-        plugins.server();
-        plugins.svg({
+        plugins.typescript();
+
+        plugins.web.fonts();
+        plugins.web.images();
+        plugins.web.json();
+        plugins.web.sass();
+        plugins.web.server();
+        plugins.web.svg({
             inline: 'storage/svg'
         });
-        plugins.txt();
-        plugins.typescript();
+        plugins.web.txt();
     };
 
-    return config.typescript(base);
-};
-
-config.typescript = (base: StrictWebpackConfiguration) => {
     return config(base);
 };
 

@@ -1,7 +1,9 @@
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import { default as TerserPlugin } from 'terser-webpack-plugin';
 import { Configuration } from '~/types';
 import path from '~/path';
+
 
 const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
     return {
@@ -25,6 +27,16 @@ export default (webpack: Configuration, options: { transpileOnly?: boolean } = {
     );
 
     webpack.optimization.mangleWasmImports = webpack.optimization?.mangleWasmImports || webpack.mode === 'production';
+    webpack.optimization.minimizer.push(
+        new TerserPlugin({
+            terserOptions: {
+                format: {
+                    comments: false,
+                },
+            },
+            extractComments: false,
+        })
+    );
     webpack.optimization.usedExports = webpack.optimization?.usedExports || webpack.mode === 'production';
 
     webpack.plugins.push(

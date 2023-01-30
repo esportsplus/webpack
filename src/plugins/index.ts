@@ -1,15 +1,6 @@
 import { Configuration } from '~/types';
-import favicon from './favicon';
-import fonts from './fonts';
-import html from './html';
-import images from './images';
-import json from './json';
-import polyfill from './polyfill';
-import server from './server';
-import sass from './sass';
-import txt from './txt';
-import svg from './svg';
 import typescript from './typescript';
+import web from './web';
 
 
 type Function = (...args: any[]) => void;
@@ -26,7 +17,7 @@ interface NestedFunction {
 };
 
 
-let plugins = { favicon, fonts, html, images, json, polyfill, sass, server, svg, txt, typescript };
+let plugins = { typescript, web };
 
 
 function factory(methods: any, nested: NestedFunction, prefix: string, used: Record<string, boolean>, webpack: Configuration) {

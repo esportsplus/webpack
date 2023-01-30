@@ -56,7 +56,6 @@ export default (webpack: Configuration) => {
     webpack.optimization.minimizer.push(
         new CssMinimizerPlugin()
     );
-    webpack.optimization.removeEmptyChunks = true;
 
     webpack.plugins.push(
         new RemoveEmptyScriptsPlugin({
