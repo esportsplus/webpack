@@ -47,38 +47,33 @@ function externals(internal: string[] = []): CustomWebpackConfiguration['externa
 }
 
 function read(directory: string) {
-    let list: string | string[] = [];
-
-    if (!fs.existsSync(directory)) {
-        return list;
-    }
+    let list: string[] = [];
 
     try {
-        list = fs
-            .readdirSync(directory)
-            .map((module) => {
-                if (regex.at.test(module)) {
-                    regex.at.lastIndex = 0;
+        let dependencies = fs.readdirSync(directory);
 
-                    try {
-                        return fs
-                            .readdirSync(path.join(directory, module))
-                            .map((scoped) => `${module}/${scoped}`);
+        for (let module in dependencies) {
+            if (regex.at.test(module)) {
+                regex.at.lastIndex = 0;
+
+                try {
+                    let dependencies = fs.readdirSync( path.join(directory, module) );
+
+                    for (let dependency in dependencies) {
+                        list.push(`${module}/${dependency}`);
                     }
-                    catch {
-                        return [ module ];
-                    }
+
+                    continue;
                 }
+                catch {}
+            }
 
-                return module;
-            })
-            .reduce(function (prev, next) {
-                return prev.concat(Array.isArray(next) ? next[0] : next);
-            }, []);
+            list.push(module);
+        }
     }
     catch {}
 
-    return typeof list === 'string' ? [list] : list;
+    return list;
 }
 
 
