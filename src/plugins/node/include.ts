@@ -13,6 +13,39 @@ let delimiter = '/',
     };
 
 
+function externals(internal: string[] = []): CustomWebpackConfiguration['externals'] {
+    let packages = read('node_modules');
+
+    if (internal) {
+        packages = packages.filter((name: string) => {
+            return internal.indexOf(name) === -1;
+        });
+    }
+
+    if (!packages.length) {
+        return [];
+    }
+
+    return [
+        ({ request }, callback) => {
+            let importing = request || '',
+                name = importing.split(delimiter)[0];
+
+            if (regex.scoped.test(importing)) {
+                name = importing.split(delimiter, 2).join(delimiter);
+                regex.scoped.lastIndex = 0;
+            }
+
+            // Mark module as external
+            if (packages.indexOf(name) !== -1) {
+                return callback(undefined, `commonjs ${importing}`);
+            }
+
+            callback();
+        }
+    ];
+}
+
 function read(directory: string) {
     let list: string | string[] = [];
 
@@ -46,44 +79,9 @@ function read(directory: string) {
     catch {}
 
     return typeof list === 'string' ? [list] : list;
+}
+
+
+export default (webpack: Configuration, packages: string[] = []) => {
+    webpack.externals = externals(packages || []);
 };
-
-
-const externals = (ignore: string[] = []): CustomWebpackConfiguration['externals'] => {
-    let packages = read('node_modules');
-
-    if (ignore) {
-        packages = packages.filter((name: string) => {
-            return ignore.indexOf(name) === -1;
-        });
-    }
-
-    if (!packages.length) {
-        return [];
-    }
-
-    return [
-        ({ request }, callback) => {
-            let importing = request || '',
-                name = importing.split(delimiter)[0];
-
-            if (regex.scoped.test(importing)) {
-                name = importing.split(delimiter, 2).join(delimiter);
-                regex.scoped.lastIndex = 0;
-            }
-
-            // Mark module as external
-            if (packages.indexOf(name) !== -1) {
-                return callback(undefined, `commonjs ${importing}`);
-            }
-
-            callback();
-        }
-    ];
-};
-
-
-export default (webpack: Configuration, include: string[] = []) => {
-    webpack.externals = externals(include || []);
-};
-export { externals };
