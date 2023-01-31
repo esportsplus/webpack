@@ -1,4 +1,4 @@
-import crypto from './crypto';
+import bundle from './bundle';
 
 
-export default { crypto };
+export default { bundle };
