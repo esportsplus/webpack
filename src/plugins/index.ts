@@ -26,7 +26,7 @@ function factory(methods: any, nested: NestedFunction, prefix: string, used: Rec
         let plugin = nested[key];
 
         if (typeof plugin !== 'function') {
-            factory((methods[key] = {}), plugin[key] as NestedFunction, `${key}.`, used, webpack);
+            factory((methods[key] = {}), plugin, `${key}.`, used, webpack);
             continue;
         }
 

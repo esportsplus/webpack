@@ -1,6 +1,4 @@
 import { StrictWebpackConfiguration } from '~/types';
-import fs from 'node:fs';
-import path from 'node:path';
 import config from './index';
 
 
@@ -24,22 +22,7 @@ export default (base: StrictWebpackConfiguration) => {
             previous(plugins);
         }
 
-        // Bundles 'devDependencies' if imported within node application
-        if (!base.externals) {
-            let internal: string[] = [];
-
-            try {
-                let contents = JSON.parse(
-                        fs.readFileSync(path.resolve('package.json'), 'utf8') || '{}'
-                    );
-
-                internal = Object.keys(contents?.devDependencies || {}) || [];
-            }
-            catch {}
-
-            plugins.node.bundle(internal);
-        }
-
+        plugins.node.include();
         plugins.typescript();
     };
 

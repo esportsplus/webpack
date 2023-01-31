@@ -1,4 +1,4 @@
-import bundle from './bundle';
+import include from './include';
 
 
-export default { bundle };
+export default { include };
