@@ -2,8 +2,6 @@ import { StrictWebpackConfiguration } from '~/types';
 import config from './index';
 
 
-// IMPORTANT!
-// - Bundling node apps with package.json dependencies until es module support improves
 export default (base: StrictWebpackConfiguration) => {
     base.externalsPresets = { node: true };
 
@@ -22,6 +20,8 @@ export default (base: StrictWebpackConfiguration) => {
             previous(plugins);
         }
 
+        // If plugin has not been set all
+        // node_module packages will be marked as external
         plugins.node.include();
         plugins.typescript();
     };
