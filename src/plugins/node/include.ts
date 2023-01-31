@@ -12,31 +12,48 @@ let delimiter = '/',
 
 
 function externals(internal: string[] = []): CustomWebpackConfiguration['externals'] {
-    let packages = read('node_modules');
+    let externals = read('node_modules');
 
     if (internal) {
-        packages = packages.filter((name: string) => {
+        let directories: string[] = [];
+
+        for (let directory of internal) {
+            if (directory[0] !== '@' || directory.indexOf(delimiter) !== -1) {
+                continue;
+            }
+
+            directories.push(directory);
+        }
+
+        externals = externals.filter((name: string) => {
+            for (let directory of directories) {
+                if (name.startsWith(directory)) {
+                    return false;
+                }
+            }
+
             return internal.indexOf(name) === -1;
         });
     }
 
-    if (!packages.length) {
+    if (!externals.length) {
         return [];
     }
 
     return [
         ({ request }, callback) => {
-            let importing = request || '',
-                name = importing.split(delimiter)[0];
+            if (request) {
+                let name = request.split(delimiter)[0];
 
-            if (regex.test(importing)) {
-                name = importing.split(delimiter, 2).join(delimiter);
-                regex.lastIndex = 0;
-            }
+                if (regex.test(request)) {
+                    name = request.split(delimiter, 2).join(delimiter);
+                    regex.lastIndex = 0;
+                }
 
-            // Mark module as external
-            if (packages.indexOf(name) !== -1) {
-                return callback(undefined, `commonjs ${importing}`);
+                // Mark module as external
+                if (externals.indexOf(name) !== -1) {
+                    return callback(undefined, `commonjs ${request}`);
+                }
             }
 
             callback();
