@@ -1,5 +1,5 @@
 import { StrictWebpackConfiguration } from '~/types';
-import parse from './parse';
+import config from './index';
 
 
 export default (base: StrictWebpackConfiguration) => {
@@ -28,5 +28,5 @@ export default (base: StrictWebpackConfiguration) => {
         plugins.web.txt();
     };
 
-    return parse(base);
+    return config(base);
 };

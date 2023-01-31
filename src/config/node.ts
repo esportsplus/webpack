@@ -1,6 +1,6 @@
 import { CustomWebpackConfiguration, StrictWebpackConfiguration } from '~/types';
+import config from './index';
 import fs from 'node:fs';
-import parse from './parse';
 import path from 'node:path';
 
 
@@ -38,9 +38,9 @@ function externals(dependencies: string[]): CustomWebpackConfiguration['external
 }
 
 
-export default (base: StrictWebpackConfiguration, { exclude }: { exclude?: string[] }) => {
-    // IMPORTANT!
-    // - Bundling node apps with package.json dependencies until es module support improves
+// IMPORTANT!
+// - Bundling node apps with package.json dependencies until es module support improves
+export default (base: StrictWebpackConfiguration, { include }: { include?: string[] } = {}) => {
     let dependencies: string[] = [];
 
     try {
@@ -52,8 +52,11 @@ export default (base: StrictWebpackConfiguration, { exclude }: { exclude?: strin
     }
     catch {}
 
-    base.externals = externals( dependencies.concat(exclude || []) );
+    base.externals = externals( dependencies.concat(include || []) );
     base.externalsPresets = { node: true };
+
+    // Disable all node polyfills
+    base.node = false;
 
     base.output = base.output || {};
     base.output.path = base.output?.path || 'build';
@@ -68,7 +71,7 @@ export default (base: StrictWebpackConfiguration, { exclude }: { exclude?: strin
         }
 
         plugins.typescript();
-        return parse(base);
     };
 
+    return config(base);
 };
