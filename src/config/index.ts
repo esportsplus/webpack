@@ -9,6 +9,9 @@ import web from './web';
 const config = (base: CustomWebpackConfiguration) => {
     base.entry = flatten(base.entry);
 
+    base.experiments ||= {};
+    base.experiments.topLevelAwait ||= true;
+
     if (!['production', 'development'].includes(base.mode || '')) {
         base.mode = 'production';
     }

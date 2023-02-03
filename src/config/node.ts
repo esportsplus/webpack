@@ -3,9 +3,6 @@ import config from './index';
 
 
 export default (base: StrictWebpackConfiguration) => {
-    base.experiments ||= {};
-    base.experiments.topLevelAwait ||= true;
-
     base.externalsPresets = { node: true };
 
     // Disable all node polyfills
