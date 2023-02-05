@@ -3,13 +3,14 @@ import config from './index';
 
 
 export default (base: StrictWebpackConfiguration) => {
-    base.externalsPresets = { node: true };
+    base.externalsPresets ??= {};
+    base.externalsPresets.node ??= true;
 
-    // Disable all node polyfills
+    // Disables all node polyfills
     base.node = false;
 
-    base.output ||= {};
-    base.output.path ||= 'build';
+    base.output ??= {};
+    base.output.path ??= 'build';
 
     base.target = 'node';
 

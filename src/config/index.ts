@@ -9,30 +9,27 @@ import web from './web';
 const config = (base: CustomWebpackConfiguration) => {
     base.entry = flatten(base.entry);
 
-    base.experiments ||= {};
-    base.experiments.topLevelAwait ||= true;
-
     if (!['production', 'development'].includes(base.mode || '')) {
         base.mode = 'production';
     }
 
-    base.module ||= {};
-    base.module.rules ||= [];
+    base.module ??= {};
+    base.module.rules ??= [];
 
-    base.optimization ||= {};
-    base.optimization.minimize = base.mode === 'production';
-    base.optimization.minimizer ||= [];
+    base.optimization ??= {};
+    base.optimization.minimize ??= base.mode === 'production';
+    base.optimization.minimizer ??= [];
 
-    base.output ||= {};
+    base.output ??= {};
 
     if (base.output?.path) {
         base.output.path = path.resolve( base.output.path );
     }
 
-    base.plugins ||= [];
+    base.plugins ??= [];
 
-    base.resolve ||= {};
-    base.resolve.plugins ||= [];
+    base.resolve ??= {};
+    base.resolve.plugins ??= [];
 
     if (base.use) {
         base.use( plugins(base as Configuration) );

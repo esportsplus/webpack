@@ -3,8 +3,8 @@ import config from './index';
 
 
 export default (base: StrictWebpackConfiguration) => {
-    base.output ||= {};
-    base.output.path ||= 'public';
+    base.output ??= {};
+    base.output.path ??= 'public';
 
     base.target = 'web';
 
