@@ -1,6 +1,5 @@
 import { Configuration } from '~/types';
 import node from './node';
-import typescript from './typescript';
 import web from './web';
 
 
@@ -18,7 +17,7 @@ interface NestedFunction {
 };
 
 
-let plugins = { node, typescript, web };
+let plugins = { node, web };
 
 
 function factory(methods: any, nested: NestedFunction, prefix: string, used: Record<string, boolean>, webpack: Configuration) {
@@ -44,4 +43,6 @@ function factory(methods: any, nested: NestedFunction, prefix: string, used: Rec
 }
 
 
-export default (webpack: Configuration) => factory({}, plugins, '', {}, webpack) as Infer<typeof plugins>;
+export default (webpack: Configuration) => {
+    return factory({}, plugins, '', {}, webpack) as Infer<typeof plugins>;
+}

@@ -1,15 +1,24 @@
-import { Configuration, WebpackConfiguration } from '~/types';
+import { Configuration } from '~/types';
 
 
-export default (webpack: Configuration, server?: WebpackConfiguration['devServer']) => {
-    webpack.devServer = Object.assign({
-        client: {
-            overlay: false,
-            progress: true
+export default (config: Configuration, server?: Configuration['devServer']) => {
+    if (config.mode === 'production') {
+        return;
+    }
+
+    config.devServer = Object.assign(
+        {
+            client: {
+                overlay: false,
+                progress: true
+            },
+            compress: true,
+            historyApiFallback: true,
+            hot: true,
+            open: true,
+            server: 'https'
         },
-        compress: true,
-        historyApiFallback: true,
-        hot: true,
-        open: true
-    }, server || {});
+        config.devServer || {},
+        server || {}
+    );
 };

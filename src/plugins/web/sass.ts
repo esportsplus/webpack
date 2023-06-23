@@ -20,10 +20,10 @@ const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) =>
 };
 
 
-export default (webpack: Configuration) => {
-    webpack.module.rules.push(
+export default (config: Configuration) => {
+    config.module.rules.push(
         {
-            test: /\.(c|sc|sa)ss$/,
+            test: /\.(c|sa|sc)ss$/,
             use: [
                 MiniCssExtractPlugin.loader,
                 {
@@ -53,11 +53,11 @@ export default (webpack: Configuration) => {
         }
     );
 
-    webpack.optimization.minimizer.push(
+    config.optimization.minimizer.push(
         new CssMinimizerPlugin()
     );
 
-    webpack.plugins.push(
+    config.plugins.push(
         new RemoveEmptyScriptsPlugin({
             remove: /css\/([^.]*|(.+)\.js)$/
         }),

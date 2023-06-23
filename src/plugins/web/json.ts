@@ -2,12 +2,12 @@ import { default as JsonMinimizerPlugin } from 'json-minimizer-webpack-plugin';
 import { Configuration } from '~/types';
 
 
-export default (webpack: Configuration) => {
-    webpack.optimization.minimizer.push(
+export default (config: Configuration) => {
+    config.optimization.minimizer.push(
         new JsonMinimizerPlugin()
     );
 
-    webpack.module.rules.push({
+    config.module.rules.push({
         generator: {
             filename: 'json/[contenthash][ext]'
         },

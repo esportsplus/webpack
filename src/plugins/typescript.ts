@@ -3,6 +3,7 @@ import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { default as TerserPlugin } from 'terser-webpack-plugin';
 import { Configuration } from '~/types';
 import path from '~/path';
+import nodepath from 'node:path';
 
 
 const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
@@ -13,21 +14,23 @@ const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) =>
 };
 
 
-export default (webpack: Configuration, options: { transpileOnly?: boolean } = {}) => {
-    webpack.module.rules.push(
+export default (config: Configuration, options: { configFile?: string, transpileOnly?: boolean } = {}) => {
+    options.configFile ??= nodepath.resolve('./tsconfig.json');
+
+    config.module.rules.push(
         {
             test: /\.tsx?$/,
             exclude: /node_modules/,
             loader: 'ts-loader',
             options,
             resolve: {
-                fullySpecified: false,
+                fullySpecified: false
             }
         }
     );
 
-    webpack.optimization.mangleWasmImports ??= webpack.mode === 'production';
-    webpack.optimization.minimizer.push(
+    config.optimization.mangleWasmImports ??= config.mode === 'production';
+    config.optimization.minimizer.push(
         new TerserPlugin({
             terserOptions: {
                 format: {
@@ -37,17 +40,17 @@ export default (webpack: Configuration, options: { transpileOnly?: boolean } = {
             extractComments: false,
         })
     );
-    webpack.optimization.usedExports ??= webpack.mode === 'production';
+    config.optimization.usedExports ??= config.mode === 'production';
 
-    webpack.plugins.push(
+    config.plugins.push(
         new ForkTsCheckerWebpackPlugin()
     );
 
-    webpack.resolve.extensions = ['.tsx', '.ts', '.js'];
-    webpack.resolve.fullySpecified = false;
-    webpack.resolve.plugins.push(
+    config.resolve.extensions = ['.tsx', '.ts', '.js'];
+    config.resolve.fullySpecified = false;
+    config.resolve.plugins.push(
         new TsconfigPathsPlugin({
-            extensions: webpack.resolve.extensions
+            extensions: config.resolve.extensions
         })
     );
 };

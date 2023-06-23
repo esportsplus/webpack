@@ -1,64 +1,43 @@
-import { Configuration, CustomWebpackConfiguration } from '~/types';
+import { Configuration, NestedConfiguration } from '~/types';
 import fs from 'node:fs';
 import path from 'node:path';
 
 
-let delimiter = '/',
-    // Scoped module regex
-    regex = new RegExp(
-        '@[a-zA-Z0-9][\\w-.]+/[a-zA-Z0-9][\\w-.]+([a-zA-Z0-9./]+)?',
-        'g'
-    );
-
-
-function externals(internal: string[] = []): CustomWebpackConfiguration['externals'] {
-    let externals = read('node_modules');
+function externals(internal: string[] = []): NestedConfiguration['externals'] {
+    let externals: Record<string, string> = {},
+        modules = read('node_modules');
 
     if (internal) {
         let directories: string[] = [];
 
         for (let directory of internal) {
-            if (directory[0] !== '@' || directory.indexOf(delimiter) !== -1) {
+            if (directory[0] !== '@' || directory.indexOf('/') !== -1) {
                 continue;
             }
 
             directories.push(directory);
         }
 
-        externals = externals.filter((name: string) => {
+        for (let i = 0, n = modules.length; i < n; i++) {
+            let external = false,
+                module = modules[i];
+
             for (let directory of directories) {
-                if (name.startsWith(directory)) {
-                    return false;
+                if (module.startsWith(directory)) {
+                    continue;
                 }
+
+                external = true;
+                break;
             }
 
-            return internal.indexOf(name) === -1;
-        });
-    }
-
-    if (!externals.length) {
-        return [];
-    }
-
-    return [
-        ({ request }, callback) => {
-            if (request) {
-                let name = request.split(delimiter)[0];
-
-                if (regex.test(request)) {
-                    name = request.split(delimiter, 2).join(delimiter);
-                    regex.lastIndex = 0;
-                }
-
-                // Mark module as external
-                if (externals.indexOf(name) !== -1) {
-                    return callback(undefined, `commonjs ${request}`);
-                }
+            if (external) {
+                externals[modules[i]] = modules[i];
             }
-
-            callback();
         }
-    ];
+    }
+
+    return externals;
 }
 
 function read(directory: string) {
@@ -68,6 +47,10 @@ function read(directory: string) {
         let dependencies = fs.readdirSync(directory);
 
         for (let module of dependencies) {
+            if (module[0] === '.') {
+                continue;
+            }
+
             if (module[0] === '@') {
                 try {
                     let dependencies = fs.readdirSync( path.join(directory, module) );
@@ -90,6 +73,6 @@ function read(directory: string) {
 }
 
 
-export default (webpack: Configuration, packages: string[] = []) => {
-    webpack.externals = externals(packages || []);
+export default (config: Configuration, packages: string[] = []) => {
+    config.externals = externals(packages || []);
 };

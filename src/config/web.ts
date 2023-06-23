@@ -1,8 +1,8 @@
-import { StrictWebpackConfiguration } from '~/types';
+import { NestedConfiguration } from '~/types';
 import config from './index';
 
 
-export default (base: StrictWebpackConfiguration) => {
+export default (base: NestedConfiguration) => {
     base.output ??= {};
     base.output.path ??= 'public';
 
@@ -15,11 +15,10 @@ export default (base: StrictWebpackConfiguration) => {
             previous(plugins);
         }
 
-        plugins.typescript();
-
         plugins.web.fonts();
         plugins.web.images();
         plugins.web.json();
+        plugins.web.polyfill.node();
         plugins.web.sass();
         plugins.web.server();
         plugins.web.svg({

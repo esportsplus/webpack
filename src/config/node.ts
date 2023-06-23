@@ -1,13 +1,14 @@
-import { StrictWebpackConfiguration } from '~/types';
+import { NestedConfiguration } from '~/types';
 import config from './index';
 
 
-export default (base: StrictWebpackConfiguration) => {
-    base.externalsPresets ??= {};
-    base.externalsPresets.node ??= true;
-
+export default (base: NestedConfiguration) => {
     // Disables all node polyfills
-    base.node = false;
+    base.node ??= {};
+
+    if (base.node) {
+        base.node.global = false;
+    }
 
     base.output ??= {};
     base.output.path ??= 'build';
@@ -24,7 +25,6 @@ export default (base: StrictWebpackConfiguration) => {
         // If plugin has not been set all
         // node_module packages will be marked as external
         plugins.node.include();
-        plugins.typescript();
     };
 
     return config(base);

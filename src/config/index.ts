@@ -1,4 +1,4 @@
-import { Configuration, CustomWebpackConfiguration } from '~/types';
+import { Configuration, NestedConfiguration } from '~/types';
 import { flatten } from '~/entry';
 import plugins from '~/plugins';
 import path from 'node:path';
@@ -6,12 +6,12 @@ import node from './node';
 import web from './web';
 
 
-const config = (base: CustomWebpackConfiguration) => {
-    base.entry = flatten(base.entry);
-
-    if (!['production', 'development'].includes(base.mode || '')) {
-        base.mode = 'production';
+function config(base: NestedConfiguration) {
+    if (base.mode === 'production') {
+        base.devtool = false;
     }
+
+    base.entry = flatten(base.entry);
 
     base.module ??= {};
     base.module.rules ??= [];
@@ -37,8 +37,7 @@ const config = (base: CustomWebpackConfiguration) => {
     }
 
     return base as Configuration;
-};
-
+}
 config.node = node;
 config.web = web;
 

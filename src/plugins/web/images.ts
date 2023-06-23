@@ -1,12 +1,12 @@
 import { Configuration } from '~/types';
 
 
-export default (webpack: Configuration) => {
-    webpack.module.rules.push({
+export default (config: Configuration) => {
+    config.module.rules.push({
         generator: {
             filename: 'images/[contenthash][ext]'
         },
-        test: /.(gif|jpe?g|png)$/,
+        test: /.(gif|jpe?g|png|webp)$/,
         type: 'asset/resource'
     });
 };
