@@ -6,7 +6,7 @@ import node from './node';
 import web from './web';
 
 
-function config(base: NestedConfiguration) {
+async function config(base: NestedConfiguration) {
     if (base.mode === 'production') {
         base.devtool = false;
     }
@@ -32,7 +32,7 @@ function config(base: NestedConfiguration) {
     base.resolve.plugins ??= [];
 
     if (base.use) {
-        base.use( plugins(base as Configuration) );
+        await base.use( plugins(base as Configuration) );
         delete base.use;
     }
 

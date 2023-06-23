@@ -1,27 +1,18 @@
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { default as TerserPlugin } from 'terser-webpack-plugin';
+// import { EsbuildPlugin } from 'esbuild-loader';
 import { Configuration } from '~/types';
-import path from '~/path';
-import nodepath from 'node:path';
+import path from 'node:path';
 
 
-const entry = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
-    return {
-        filename: `[${hash ? 'contenthash' : 'name'}].js`,
-        import: path.resolve(pattern)
-    };
-};
-
-
-export default (config: Configuration, options: { configFile?: string, transpileOnly?: boolean } = {}) => {
-    options.configFile ??= nodepath.resolve('./tsconfig.json');
+export default async (config: Configuration, options: { tsconfig?: string } = {}) => {
+    options.tsconfig ??= path.resolve('./tsconfig.json');
 
     config.module.rules.push(
         {
-            test: /\.tsx?$/,
+            test: /\.[jt]sx?$/,
             exclude: /node_modules/,
-            loader: 'ts-loader',
+            loader: 'esbuild-loader',
             options,
             resolve: {
                 fullySpecified: false
@@ -31,13 +22,9 @@ export default (config: Configuration, options: { configFile?: string, transpile
 
     config.optimization.mangleWasmImports ??= config.mode === 'production';
     config.optimization.minimizer.push(
-        new TerserPlugin({
-            terserOptions: {
-                format: {
-                    comments: false,
-                },
-            },
-            extractComments: false,
+        new (await import('esbuild-loader'))['EsbuildPlugin']({
+            css: true,
+            target: 'esnext'
         })
     );
     config.optimization.usedExports ??= config.mode === 'production';
@@ -50,8 +37,8 @@ export default (config: Configuration, options: { configFile?: string, transpile
     config.resolve.fullySpecified = false;
     config.resolve.plugins.push(
         new TsconfigPathsPlugin({
+            configFile: options.tsconfig,
             extensions: config.resolve.extensions
         })
     );
 };
-export { entry };

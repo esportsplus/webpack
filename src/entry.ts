@@ -1,6 +1,6 @@
 import { EntryObject } from 'webpack';
 import { NestedConfiguration } from "~/types";
-import path from './path';
+import path from '~/path';
 
 
 function recursive(data: NestedConfiguration['entry'], prefix: string = '') {
@@ -32,14 +32,29 @@ function recursive(data: NestedConfiguration['entry'], prefix: string = '') {
 }
 
 
-const entry = (pattern: string | string[]) => {
-    return path.resolve(pattern);
+// DO NOT ADD EXTENSION TO 'filename'
+// - All files will receive the extension ( including bundled js files )
+// - `mini-css-extract-plugin` plugin appends css extension once extracted
+// - JS files created during bundle are left extensionless
+// - Makes it easy to cleanup empty js files after build
+const css = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
+    return {
+        filename: `[${hash ? 'contenthash' : 'name'}]`,
+        import: path.resolve(pattern)
+    };
 };
 
 const flatten = (data: NestedConfiguration['entry']) => {
     return recursive(data);
-}
+};
+
+const js = (pattern: string | string[], { hash }: { hash?: boolean } = {}) => {
+    return {
+        filename: `[${hash ? 'contenthash' : 'name'}].js`,
+        import: path.resolve(pattern)
+    };
+};
 
 
-export default entry;
+export default { css, js };
 export { flatten };

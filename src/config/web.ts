@@ -10,10 +10,12 @@ export default (base: NestedConfiguration) => {
 
     let previous = base.use;
 
-    base.use = (plugins) => {
+    base.use = async (plugins) => {
         if (previous) {
             previous(plugins);
         }
+
+        await plugins.typescript();
 
         plugins.web.fonts();
         plugins.web.images();
