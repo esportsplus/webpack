@@ -45,5 +45,5 @@
         "example:server": "webpack serve --env=production=false"
     },
     "types": "build/index.d.ts",
-    "version": "0.0.99"
+    "version": "0.1.0"
 }
