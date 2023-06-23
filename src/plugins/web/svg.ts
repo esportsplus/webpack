@@ -1,4 +1,5 @@
 import { Configuration } from '~/types';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'node:path';
 
 
@@ -18,7 +19,7 @@ export default (config: Configuration, { inline }: { inline?: string | string[] 
         {
             exclude: paths,
             generator: {
-                filename: 'images/[contenthash][ext]'
+                filename: 'assets/[contenthash][ext]'
             },
             test: /.svg$/,
             type: 'asset/resource'
@@ -28,5 +29,25 @@ export default (config: Configuration, { inline }: { inline?: string | string[] 
             test: /.svg$/,
             type: 'asset/source',
         }
+    );
+
+    config.optimization.minimizer.push(
+        new ImageMinimizerPlugin({
+            minimizer: {
+                implementation: ImageMinimizerPlugin.svgoMinify,
+                options: {
+                    encodeOptions: {
+                        // Pass over SVGs multiple times to ensure all optimizations are applied.
+                        multipass: true,
+                        // Built-in plugins enabled by default
+                        // - see: https://github.com/svg/svgo#default-preset
+                        plugins: [
+                            "preset-default",
+                        ],
+                        removeViewBox: false
+                    },
+                },
+            },
+        })
     );
 };

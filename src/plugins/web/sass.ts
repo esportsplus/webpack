@@ -1,4 +1,3 @@
-// import { default as CssMinimizerPlugin } from 'css-minimizer-webpack-plugin';
 import { default as MiniCssExtractPlugin } from 'mini-css-extract-plugin';
 import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration } from '~/types';
@@ -38,10 +37,6 @@ export default (config: Configuration) => {
             ],
         }
     );
-
-    // config.optimization.minimizer.push(
-    //     new CssMinimizerPlugin()
-    // );
 
     config.plugins.push(
         new RemoveEmptyScriptsPlugin({

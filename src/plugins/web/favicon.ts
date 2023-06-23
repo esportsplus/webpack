@@ -1,13 +1,11 @@
-import { default as FaviconsWebpackPlugin } from 'favicons-webpack-plugin';
+import { default as FaviconsWebpackPlugin,  } from 'favicons-webpack-plugin';
 import { Configuration } from '~/types';
 
 
-export default (config: Configuration, options: { manifest?: string, prefix?: string, svg: string }) => {
+export default (config: Configuration, options: FaviconsWebpackPlugin['options']) => {
+    options.prefix ??= 'assets/';
+
     config.plugins.push(
-        new FaviconsWebpackPlugin({
-            logo: options.svg,
-            manifest: options?.manifest,
-            prefix: options?.prefix || './'
-        })
+        new FaviconsWebpackPlugin(options)
     );
 };

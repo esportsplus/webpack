@@ -6,12 +6,12 @@ import node from './node';
 import web from './web';
 
 
-async function config(base: NestedConfiguration) {
+function config(base: NestedConfiguration) {
     if (base.mode === 'production') {
         base.devtool = false;
     }
 
-    base.entry = flatten(base.entry);
+    base.entry = flatten(base.entry, base.mode === 'production');
 
     base.module ??= {};
     base.module.rules ??= [];
@@ -19,8 +19,10 @@ async function config(base: NestedConfiguration) {
     base.optimization ??= {};
     base.optimization.minimize ??= base.mode === 'production';
     base.optimization.minimizer ??= [];
+    base.optimization.runtimeChunk ??= true;
 
     base.output ??= {};
+    base.output.pathinfo ??= false;
 
     if (base.output?.path) {
         base.output.path = path.resolve( base.output.path );
@@ -32,7 +34,7 @@ async function config(base: NestedConfiguration) {
     base.resolve.plugins ??= [];
 
     if (base.use) {
-        await base.use( plugins(base as Configuration) );
+        base.use( plugins(base as Configuration) );
         delete base.use;
     }
 

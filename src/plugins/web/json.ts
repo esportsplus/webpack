@@ -7,11 +7,13 @@ export default (config: Configuration) => {
         new JsonMinimizerPlugin()
     );
 
-    config.module.rules.push({
-        generator: {
-            filename: 'json/[contenthash][ext]'
-        },
-        test: /\.json$/,
-        type: 'asset/resource'
-    });
+    config.module.rules.push(
+        {
+            generator: {
+                filename: 'assets/[contenthash][ext]'
+            },
+            test: /\.json$/,
+            type: 'asset/resource'
+        }
+    );
 };

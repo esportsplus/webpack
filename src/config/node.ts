@@ -17,7 +17,7 @@ export default (base: NestedConfiguration) => {
 
     let previous = base.use;
 
-    base.use = async (plugins) => {
+    base.use = (plugins) => {
         if (previous) {
             previous(plugins);
         }
@@ -25,7 +25,7 @@ export default (base: NestedConfiguration) => {
         // If plugin has not been set all
         // node_module packages will be marked as external
         plugins.node.include();
-        await plugins.typescript();
+        plugins.typescript();
     };
 
     return config(base);
