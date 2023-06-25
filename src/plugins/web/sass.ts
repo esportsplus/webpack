@@ -1,7 +1,10 @@
 import { default as MiniCssExtractPlugin } from 'mini-css-extract-plugin';
+import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
 import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration } from '~/types';
 import autoprefixer from 'autoprefixer';
+import glob from 'fast-glob';
+import path from 'node:path';
 import sass from 'sass';
 
 
@@ -44,6 +47,9 @@ export default (config: Configuration) => {
                 return `${data?.chunk?.filenameTemplate || data?.chunk?.name || '[contenthash]'}.css`;
             }
         }),
+        new PurgeCSSPlugin({
+            paths: glob.sync(`${path.resolve('src')}/**/*`)
+        } as any),
         new RemoveEmptyScriptsPlugin({
             remove: /css\/([^.]*|(.+)\.js)$/
         })
