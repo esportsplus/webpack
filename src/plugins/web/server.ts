@@ -2,10 +2,6 @@ import { Configuration } from '~/types';
 
 
 export default (config: Configuration, server?: Configuration['devServer']) => {
-    if (config.mode === 'production') {
-        return;
-    }
-
     config.devServer = Object.assign(
         {
             client: {

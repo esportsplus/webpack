@@ -16,6 +16,7 @@ export default async (config: Configuration, { tsconfig }: { tsconfig?: string }
             loader: 'esbuild-loader',
             options: {
                 implementation: esbuild,
+                target: 'esnext',
                 tsconfig
             }
         }
@@ -23,10 +24,7 @@ export default async (config: Configuration, { tsconfig }: { tsconfig?: string }
 
     config.optimization.mangleWasmImports ??= config.mode === 'production';
     config.optimization.minimizer.push(
-        new EsbuildPlugin({
-            css: true,
-            target: 'esnext'
-        })
+        new EsbuildPlugin()
     );
     config.optimization.usedExports ??= config.mode === 'production';
 

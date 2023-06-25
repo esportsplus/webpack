@@ -1,9 +1,12 @@
+// @ts-ignore
+import SpeedMeasurePlugin from 'speed-measure-webpack-plugin';
 import { Configuration, NestedConfiguration } from '~/types';
 import { flatten } from '~/entry';
 import path from 'node:path';
 import plugins from '~/plugins';
 import node from './node';
 import web from './web';
+
 
 
 function config(base: NestedConfiguration) {
@@ -21,11 +24,8 @@ function config(base: NestedConfiguration) {
     base.optimization.minimizer ??= [];
 
     base.output ??= {};
+    base.output.path = path.resolve( base.output.path || 'build' );
     base.output.pathinfo ??= false;
-
-    if (base.output?.path) {
-        base.output.path = path.resolve( base.output.path );
-    }
 
     base.plugins ??= [];
 
@@ -37,7 +37,7 @@ function config(base: NestedConfiguration) {
         delete base.use;
     }
 
-    return base as Configuration;
+    return (new SpeedMeasurePlugin()).wrap(base) as Configuration;
 }
 config.node = node;
 config.web = web;

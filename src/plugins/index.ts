@@ -1,4 +1,5 @@
 import { Configuration } from '~/types';
+import define from './define';
 import node from './node';
 import web from './web';
 import typescript from './typescript';
@@ -18,7 +19,7 @@ interface NestedFunction {
 };
 
 
-let plugins = { node, web, typescript };
+let plugins = { define, node, web, typescript };
 
 
 function factory(methods: any, nested: NestedFunction, prefix: string, used: Record<string, boolean>, webpack: Configuration) {

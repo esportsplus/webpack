@@ -8,7 +8,7 @@ export default (config: Configuration) => {
                 filename: 'assets/[contenthash].txt'
             },
             test: /\.txt$/,
-            type: 'asset/resource',
+            type: 'asset/resource'
         }
     );
 };

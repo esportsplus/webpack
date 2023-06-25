@@ -3,10 +3,6 @@ import { Configuration } from '~/types';
 
 
 export default (config: Configuration) => {
-    config.optimization.minimizer.push(
-        new JsonMinimizerPlugin()
-    );
-
     config.module.rules.push(
         {
             generator: {
@@ -15,5 +11,9 @@ export default (config: Configuration) => {
             test: /\.json$/,
             type: 'asset/resource'
         }
+    );
+
+    config.optimization.minimizer.push(
+        new JsonMinimizerPlugin()
     );
 };

@@ -7,7 +7,7 @@ export default (config: Configuration, options: HtmlWebpackPlugin.Options = {}) 
 
     options.meta = options.meta || {};
     options.meta.content ??= 'text/html';
-    options.meta.viewport ??= 'width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimal-ui';
+    options.meta.viewport ??= 'height=device-height, initial-scale=1, maximum-scale=1, minimal-ui, width=device-width';
 
     config.plugins.push(
         new HtmlWebpackPlugin(options)

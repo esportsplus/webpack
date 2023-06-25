@@ -49,9 +49,9 @@ function plugin(directories: string[], inline: boolean) {
                     // Built-in plugins enabled by default
                     // - see: https://github.com/svg/svgo#default-preset
                     plugins
-                },
-            },
-        },
+                }
+            }
+        }
     });
 }
 

@@ -3,15 +3,8 @@ import config from './index';
 
 
 export default (base: NestedConfiguration) => {
-    // Disables all node polyfills
-    base.node ??= {};
-
-    if (base.node) {
-        base.node.global = false;
-    }
-
-    base.output ??= {};
-    base.output.path ??= 'build';
+    // Disable all node polyfills
+    base.node = false;
 
     base.target = 'node';
 
@@ -21,6 +14,8 @@ export default (base: NestedConfiguration) => {
         if (previous) {
             previous(plugins);
         }
+
+        plugins.define();
 
         // If plugin has not been set all
         // node_module packages will be marked as external

@@ -3,9 +3,6 @@ import config from './index';
 
 
 export default (base: NestedConfiguration) => {
-    base.output ??= {};
-    base.output.path ??= 'public';
-
     base.target = 'web';
 
     let previous = base.use;
@@ -15,6 +12,7 @@ export default (base: NestedConfiguration) => {
             previous(plugins);
         }
 
+        plugins.define();
         plugins.typescript();
 
         plugins.web.fonts();

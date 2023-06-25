@@ -39,13 +39,13 @@ export default (config: Configuration) => {
     );
 
     config.plugins.push(
-        new RemoveEmptyScriptsPlugin({
-            remove: /css\/([^.]*|(.+)\.js)$/
-        }),
         new MiniCssExtractPlugin({
             filename: (data: any) => {
                 return `${data?.chunk?.filenameTemplate || data?.chunk?.name || '[contenthash]'}.css`;
             }
+        }),
+        new RemoveEmptyScriptsPlugin({
+            remove: /css\/([^.]*|(.+)\.js)$/
         })
     );
 };

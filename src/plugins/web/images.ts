@@ -10,7 +10,7 @@ export default (config: Configuration) => {
             },
             test: /\.(gif|jpe?g|png|webp)$/,
             type: 'asset/resource'
-        },
+        }
     );
 
     config.optimization.minimizer.push(
