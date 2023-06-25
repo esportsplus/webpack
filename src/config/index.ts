@@ -1,7 +1,7 @@
 import { Configuration, NestedConfiguration } from '~/types';
 import { flatten } from '~/entry';
-import plugins from '~/plugins';
 import path from 'node:path';
+import plugins from '~/plugins';
 import node from './node';
 import web from './web';
 
@@ -19,7 +19,6 @@ function config(base: NestedConfiguration) {
     base.optimization ??= {};
     base.optimization.minimize ??= base.mode === 'production';
     base.optimization.minimizer ??= [];
-    base.optimization.runtimeChunk ??= true;
 
     base.output ??= {};
     base.output.pathinfo ??= false;

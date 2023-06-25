@@ -3,24 +3,21 @@ const { EsbuildPlugin } = require('esbuild-loader');
 import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin';
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
+import esbuild from 'esbuild';
 import path from 'node:path';
 
 
-export default async (config: Configuration, options: { tsconfig?: string } = {}) => {
-    options.tsconfig ??= path.resolve('./tsconfig.json');
+export default async (config: Configuration, { tsconfig }: { tsconfig?: string } = {}) => {
+    tsconfig ??= path.resolve('./tsconfig.json');
 
     config.module.rules.push(
         {
             test: /\.[jt]sx?$/,
             loader: 'esbuild-loader',
-            options,
-            resolve: {
-                fullySpecified: false
+            options: {
+                implementation: esbuild,
+                tsconfig
             }
-        },
-        {
-            test: /\.[jt]sx?$/,
-            loader: 'minify-html-literals-loader',
         }
     );
 
@@ -41,7 +38,7 @@ export default async (config: Configuration, options: { tsconfig?: string } = {}
     config.resolve.fullySpecified = false;
     config.resolve.plugins.push(
         new TsconfigPathsPlugin({
-            configFile: options.tsconfig,
+            configFile: tsconfig,
             extensions: config.resolve.extensions
         })
     );

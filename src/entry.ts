@@ -21,7 +21,7 @@ function recursive(entry: NestedConfiguration['entry'], hash: boolean, prefix: s
             }
             else if (typeof value?.filename === 'string') {
                 if (hash) {
-                    value.filename.replace('[name]', '[contenthash]');
+                    value.filename = value.filename.replace('[name]', '[contenthash]');
                 }
 
                 if (value.filename.indexOf('[name]') === -1) {
