@@ -1,0 +1,18 @@
+{
+    "author": "",
+    "description": "",
+    "devDependencies": {
+        "@esportsplus/webpack": "^0.1.4"
+    },
+    "main": "build/index.js",
+    "name": "",
+    "private": false,
+    "scripts": {
+        "build": "webpack build --env=production=true && npm run build:purgecss",
+        "build:purgecss": "npx purgecss --css build/css/*.css --content build/js/*.js --output build/css",
+        "-": "-",
+        "dev": "webpack serve --env=production=false"
+    },
+    "types": "build/index.d.ts",
+    "version": "0.0.1"
+}
