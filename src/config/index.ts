@@ -8,6 +8,13 @@ import web from './web';
 
 
 function config(base: NestedConfiguration) {
+    base.cache ??= {
+        type: 'filesystem',
+        buildDependencies: {
+            config: [ __filename ]
+        }
+    };
+
     if (base.mode === 'production') {
         base.devtool = false;
     }

@@ -33,15 +33,14 @@
     "description": "Webpack",
     "exports": {
         "./package.json": "./package.json",
-        "./package.base.json": "./package.base.json",
         "./tsconfig.base.json": "./tsconfig.base.json",
         ".": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
+            "types": "./build/index.d.ts",
+            "default": "./build/index.js"
         },
         "./global": {
-            "types": "./dist/global.d.ts",
-            "default": "./dist/global.js"
+            "types": "./build/global.d.ts",
+            "default": "./build/global.js"
         }
     },
     "main": "build/index.js",
