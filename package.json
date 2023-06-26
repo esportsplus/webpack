@@ -31,6 +31,19 @@
         "webpack-remove-empty-scripts": "^1.0.3"
     },
     "description": "Webpack",
+    "exports": {
+        "./package.json": "./package.json",
+        "./package.base.json": "./package.base.json",
+        "./tsconfig.base.json": "./tsconfig.base.json",
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./global": {
+            "types": "./dist/global.d.ts",
+            "default": "./dist/global.js"
+        }
+    },
     "main": "build/index.js",
     "name": "@esportsplus/webpack",
     "private": false,
