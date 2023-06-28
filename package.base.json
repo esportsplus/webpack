@@ -8,8 +8,7 @@
     "name": "",
     "private": false,
     "scripts": {
-        "build": "webpack build --env=production=true && npm run build:purgecss",
-        "build:purgecss": "npx purgecss --css build/css/*.css --content build/js/*.js --output build/css",
+        "build": "webpack build --env=production=true",
         "-": "-",
         "dev": "webpack serve --env=production=false"
     },

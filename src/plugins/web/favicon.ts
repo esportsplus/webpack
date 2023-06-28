@@ -1,4 +1,4 @@
-import { default as FaviconsWebpackPlugin,  } from 'favicons-webpack-plugin';
+import { default as FaviconsWebpackPlugin } from 'favicons-webpack-plugin';
 import { Configuration } from '~/types';
 
 
