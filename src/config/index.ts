@@ -9,10 +9,7 @@ import web from './web';
 
 function config(base: NestedConfiguration) {
     base.cache ??= {
-        type: 'filesystem',
-        buildDependencies: {
-            config: [ __filename ]
-        }
+        type: 'filesystem'
     };
 
     if (base.mode === 'production') {
