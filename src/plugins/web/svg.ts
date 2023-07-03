@@ -3,7 +3,7 @@ import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'node:path';
 
 
-function plugin(directories: string[], inline: boolean) {
+function loader(inline: boolean) {
     let plugins: any[] = [
             {
                 name: 'preset-default',
@@ -21,38 +21,24 @@ function plugin(directories: string[], inline: boolean) {
         plugins.push('removeXMLNS');
     }
 
-    return new ImageMinimizerPlugin({
-        minimizer: {
-            filename: 'assets/[name].svg',
-            filter: (_, path) => {
-                if (!path.endsWith('.svg')) {
-                    return false;
-                }
-
-                if (inline) {
-                    for (let i = 0, n = directories.length; i < n; i++) {
-                        if (path.indexOf(directories[i]) !== -1) {
-                            return true;
-                        }
+    return {
+        loader: ImageMinimizerPlugin.loader,
+        options: {
+            minimizer: {
+                filename: 'assets/[name].svg',
+                implementation: ImageMinimizerPlugin.svgoMinify,
+                options: {
+                    encodeOptions: {
+                        // Pass over SVGs multiple times to ensure all optimizations are applied.
+                        multipass: true,
+                        // Built-in plugins enabled by default
+                        // - see: https://github.com/svg/svgo#default-preset
+                        plugins
                     }
-
-                    return false;
-                }
-
-                return !inline;
-            },
-            implementation: ImageMinimizerPlugin.svgoMinify,
-            options: {
-                encodeOptions: {
-                    // Pass over SVGs multiple times to ensure all optimizations are applied.
-                    multipass: true,
-                    // Built-in plugins enabled by default
-                    // - see: https://github.com/svg/svgo#default-preset
-                    plugins
                 }
             }
         }
-    });
+    };
 }
 
 
@@ -75,17 +61,14 @@ export default (config: Configuration, { inline }: { inline?: string | string[] 
                 filename: 'assets/[contenthash].svg'
             },
             test: /.svg$/,
-            type: 'asset/resource'
+            type: 'asset/resource',
+            use: [ loader(false) ]
         },
         {
             include: directories,
             test: /.svg$/,
             type: 'asset/source',
+            use: [ loader(true) ]
         }
-    );
-
-    config.optimization.minimizer.push(
-        plugin(directories, false),
-        plugin(directories, true)
     );
 };
