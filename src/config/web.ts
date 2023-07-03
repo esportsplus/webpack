@@ -15,6 +15,7 @@ export default (base: NestedConfiguration) => {
         plugins.define();
         plugins.typescript();
 
+        plugins.web.audio();
         plugins.web.fonts();
         plugins.web.images();
         plugins.web.json();
@@ -25,6 +26,7 @@ export default (base: NestedConfiguration) => {
             inline: 'storage/svg'
         });
         plugins.web.txt();
+        plugins.web.video();
     };
 
     return config(base);

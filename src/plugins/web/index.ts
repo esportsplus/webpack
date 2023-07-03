@@ -1,3 +1,4 @@
+import audio from './audio';
 import favicon from './favicon';
 import fonts from './fonts';
 import html from './html';
@@ -9,6 +10,7 @@ import sass from './sass';
 import server from './server';
 import svg from './svg';
 import txt from './txt';
+import video from './video';
 
 
-export default { favicon, fonts, html, images, json, polyfill, purgecss, sass, server, svg, txt };
+export default { audio, favicon, fonts, html, images, json, polyfill, purgecss, sass, server, svg, txt, video };
