@@ -1,6 +1,7 @@
 {
     "author": "ICJR",
     "dependencies": {
+        "@esportsplus/typescript": "^0.0.1",
         "@types/webpack-node-externals": "^3.0.0",
         "autoprefixer": "^10.4.14",
         "copy-webpack-plugin": "^11.0.0",
@@ -22,15 +23,12 @@
         "sharp": "^0.32.1",
         "svgo": "^3.0.2",
         "ts-node": "^10.9.1",
-        "tsc-alias": "^1.8.6",
         "tsconfig-paths-webpack-plugin": "^4.0.1",
-        "typescript": "^5.1.6",
         "webpack": "^5.88.1",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1",
         "webpack-remove-empty-scripts": "^1.0.3"
     },
-    "description": "Webpack",
     "exports": {
         "./package.json": "./package.json",
         "./tsconfig.base.json": "./tsconfig.base.json",
