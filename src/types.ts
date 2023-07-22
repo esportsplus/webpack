@@ -20,6 +20,7 @@ type Configuration = {
 } & WebpackConfiguration;
 
 type NestedConfiguration = {
+    contenthash?: boolean,
     entry: NestedEntry | WebpackConfiguration['entry'],
     mode: NonNullable< WebpackConfiguration['mode'] >,
     use?: (plugins: ReturnType<typeof p>) => void;

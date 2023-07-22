@@ -16,7 +16,9 @@ function config(base: NestedConfiguration) {
         base.devtool = false;
     }
 
-    base.entry = flatten(base.entry, base.mode === 'production');
+    base.entry = flatten(base.entry, base.contenthash !== false && base.mode === 'production');
+
+    delete base.contenthash;
 
     base.module ??= {};
     base.module.rules ??= [];
