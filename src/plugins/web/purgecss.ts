@@ -1,3 +1,4 @@
+import { ASSET_DIRECTORY } from '~/constants';
 import { exec } from 'child_process';
 import { Configuration } from '~/types';
 
@@ -8,7 +9,7 @@ import { Configuration } from '~/types';
 export default (config: Configuration, options: { css?: string, js?: string, output?: string, variables?: boolean } = {}) => {
     options.css ??= `${config.output.path}/**/*.css`;
     options.js ??= `${config.output.path}/**/*.js`;
-    options.output ??= `${config.output.path}/assets`;
+    options.output ??= `${config.output.path}/${ASSET_DIRECTORY}`;
     // Currently broken ( removes all variables )
     // options.variables ??= true;
 

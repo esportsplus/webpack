@@ -1,3 +1,4 @@
+import { ASSET_DIRECTORY } from '~/constants';
 import { Configuration } from '~/types';
 
 
@@ -5,7 +6,7 @@ export default (config: Configuration) => {
     config.module.rules.push(
         {
             generator: {
-                filename: 'assets/[contenthash][ext]'
+                filename: `${ASSET_DIRECTORY}/[contenthash][ext]`
             },
             test: /\.mp4$/,
             type: 'asset/resource'

@@ -1,3 +1,4 @@
+import { ASSET_DIRECTORY } from '~/constants';
 import { default as JsonMinimizerPlugin } from 'json-minimizer-webpack-plugin';
 import { Configuration } from '~/types';
 
@@ -6,7 +7,7 @@ export default (config: Configuration) => {
     config.module.rules.push(
         {
             generator: {
-                filename: 'assets/[contenthash].json'
+                filename: `${ASSET_DIRECTORY}/[contenthash].json`
             },
             test: /\.json$/,
             type: 'asset/resource'

@@ -1,3 +1,4 @@
+import { ASSET_DIRECTORY } from '~/constants';
 import { Configuration } from '~/types';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
@@ -6,7 +7,7 @@ export default (config: Configuration) => {
     config.module.rules.push(
         {
             generator: {
-                filename: 'assets/[contenthash].webp'
+                filename: `${ASSET_DIRECTORY}/[contenthash].webp`
             },
             test: /\.(gif|jpe?g|png|webp)$/,
             type: 'asset/resource'

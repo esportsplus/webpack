@@ -1,3 +1,4 @@
+import { ASSET_DIRECTORY } from '~/constants';
 import { Configuration } from '~/types';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'node:path';
@@ -25,7 +26,7 @@ function loader(inline: boolean) {
         loader: ImageMinimizerPlugin.loader,
         options: {
             minimizer: {
-                filename: 'assets/[name].svg',
+                filename: `${ASSET_DIRECTORY}/[name].svg`,
                 implementation: ImageMinimizerPlugin.svgoMinify,
                 options: {
                     encodeOptions: {
@@ -58,7 +59,7 @@ export default (config: Configuration, { inline }: { inline?: string | string[] 
         {
             exclude: directories,
             generator: {
-                filename: 'assets/[contenthash].svg'
+                filename: `${ASSET_DIRECTORY}/[contenthash].svg`
             },
             test: /.svg$/,
             type: 'asset/resource',
