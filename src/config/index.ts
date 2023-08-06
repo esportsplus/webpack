@@ -1,3 +1,4 @@
+import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration, NestedConfiguration } from '~/types';
 import { flatten } from '~/entry';
 import path from 'node:path';
@@ -32,6 +33,11 @@ function config(base: NestedConfiguration) {
     base.output.pathinfo ??= false;
 
     base.plugins ??= [];
+    base.plugins.push(
+        new RemoveEmptyScriptsPlugin({
+            remove: /^([^.]*|(.+)\.js)$/
+        })
+    );
 
     base.resolve ??= {};
     base.resolve.plugins ??= [];

@@ -29,5 +29,16 @@ export default (base: NestedConfiguration) => {
         plugins.web.video();
     };
 
-    return config(base);
+    let c = config(base);
+
+    c.optimization.splitChunks = c.optimization.splitChunks || {};
+    c.optimization.splitChunks.cacheGroups = c.optimization.splitChunks.cacheGroups || {};
+    c.optimization.splitChunks.cacheGroups.vendor = {
+        chunks: 'all',
+        filename: 'assets/[contenthash].js',
+        reuseExistingChunk: true,
+        test: /node_modules/
+    };
+
+    return c;
 };

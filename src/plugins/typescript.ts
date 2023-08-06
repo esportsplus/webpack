@@ -24,7 +24,9 @@ export default async (config: Configuration, { tsconfig }: { tsconfig?: string }
 
     config.optimization.mangleWasmImports ??= config.mode === 'production';
     config.optimization.minimizer.push(
-        new EsbuildPlugin()
+        new EsbuildPlugin({
+            css: true
+        })
     );
     config.optimization.usedExports ??= config.mode === 'production';
 

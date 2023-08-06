@@ -6,9 +6,9 @@ import { Configuration } from '~/types';
 // node_modules so we have to run the purgecss
 // command on final output
 export default (config: Configuration, options: { css?: string, js?: string, output?: string, variables?: boolean } = {}) => {
-    options.css ??= 'build/css/*.css';
-    options.js ??= 'build/js/*.js';
-    options.output ??= 'build/css';
+    options.css ??= `${config.output.path}/*.css`;
+    options.js ??= `${config.output.path}/*.js`;
+    options.output ??= config.output.path;
     // Currently broken ( removes all variables )
     // options.variables ??= true;
 

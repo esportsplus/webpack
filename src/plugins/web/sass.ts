@@ -1,5 +1,4 @@
 import { default as MiniCssExtractPlugin } from 'mini-css-extract-plugin';
-import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration } from '~/types';
 import autoprefixer from 'autoprefixer';
 import sass from 'sass';
@@ -43,9 +42,6 @@ export default (config: Configuration) => {
             filename: (data: any) => {
                 return `${data?.chunk?.filenameTemplate || data?.chunk?.name || '[contenthash]'}.css`;
             }
-        }),
-        new RemoveEmptyScriptsPlugin({
-            remove: /css\/([^.]*|(.+)\.js)$/
         })
     );
 };

@@ -15,6 +15,7 @@ export default (config: Configuration) => {
 
     config.optimization.minimizer.push(
         new ImageMinimizerPlugin({
+            exclude: /(android-|apple-|favicon-|mstile-|yandex-)/,
             generator: [
                 {
                     filename: '[path][name].webp',
