@@ -8,7 +8,7 @@ import { Configuration } from '~/types';
 export default (config: Configuration, options: { css?: string, js?: string, output?: string, variables?: boolean } = {}) => {
     options.css ??= `${config.output.path}/**/*.css`;
     options.js ??= `${config.output.path}/**/*.js`;
-    options.output ??= config.output.path;
+    options.output ??= `${config.output.path}/assets`;
     // Currently broken ( removes all variables )
     // options.variables ??= true;
 
