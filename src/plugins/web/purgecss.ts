@@ -6,11 +6,18 @@ import { Configuration } from '~/types';
 // node_modules so we have to run the purgecss
 // command on final output
 export default (config: Configuration, options: { css?: string, js?: string, output?: string, variables?: boolean } = {}) => {
-    options.css ??= `${config.output.path}/*.css`;
-    options.js ??= `${config.output.path}/*.js`;
+    options.css ??= `${config.output.path}/**/*.css`;
+    options.js ??= `${config.output.path}/**/*.js`;
     options.output ??= config.output.path;
     // Currently broken ( removes all variables )
     // options.variables ??= true;
+
+    if (options.css.indexOf('\\') !== -1) {
+        for (let key of ['css', 'js', 'output']) {
+            // @ts-ignore
+            options[key] = options[key].replace(/\\/g, '/');
+        }
+    }
 
     config.plugins.push({
         apply: (compiler) => {
