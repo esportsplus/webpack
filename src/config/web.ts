@@ -1,4 +1,4 @@
-import { ASSET_DIRECTORY } from '~/constants';
+// import { ASSET_DIRECTORY } from '~/constants';
 import { NestedConfiguration } from '~/types';
 import config from './index';
 
@@ -32,14 +32,15 @@ export default (base: NestedConfiguration) => {
 
     let c = config(base);
 
-    c.optimization.splitChunks = c.optimization.splitChunks || {};
-    c.optimization.splitChunks.cacheGroups = c.optimization.splitChunks.cacheGroups || {};
-    c.optimization.splitChunks.cacheGroups.vendor = {
-        chunks: 'all',
-        filename: `${ASSET_DIRECTORY}/[contenthash].js`,
-        reuseExistingChunk: true,
-        test: /node_modules/
-    };
+    // TODO: Better splitchunk per route etc.
+    // c.optimization.splitChunks = c.optimization.splitChunks || {};
+    // c.optimization.splitChunks.cacheGroups = c.optimization.splitChunks.cacheGroups || {};
+    // c.optimization.splitChunks.cacheGroups.vendor = {
+    //     chunks: 'all',
+    //     filename: `${ASSET_DIRECTORY}/[contenthash].js`,
+    //     reuseExistingChunk: true,
+    //     test: /node_modules/
+    // };
 
     return c;
 };
