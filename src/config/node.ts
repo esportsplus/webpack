@@ -15,8 +15,6 @@ export default (base: NestedConfiguration) => {
             previous(plugins);
         }
 
-        plugins.define();
-
         // If plugin has not been set all
         // node_module packages will be marked as external
         plugins.node.include();

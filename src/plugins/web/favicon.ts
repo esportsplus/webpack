@@ -3,7 +3,7 @@ import { default as FaviconsWebpackPlugin } from 'favicons-webpack-plugin';
 import { Configuration } from '~/types';
 
 
-type Options = FaviconsWebpackPlugin['options'];
+type Options = Exclude<ConstructorParameters<typeof FaviconsWebpackPlugin>[0], string>;
 
 
 export default (config: Configuration, options: Partial<Options>) => {
