@@ -24,7 +24,7 @@ export default (base: NestedConfiguration) => {
         plugins.web.sass();
         plugins.web.server();
         plugins.web.svg({
-            spritemap: 'storage/svg'
+            inline: 'storage/svg'
         });
         plugins.web.txt();
         plugins.web.video();
