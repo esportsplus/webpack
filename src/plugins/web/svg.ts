@@ -4,15 +4,54 @@ import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 import path from 'node:path';
 
 
-export default (config: Configuration, { spritemap }: { spritemap?: string | string[] } = {}) => {
+function loader(inline: boolean) {
+    let plugins: any[] = [
+            {
+                name: 'preset-default',
+                params: {
+                    overrides: {
+                        // viewBox is required to resize SVGs with CSS.
+                        // @see https://github.com/svg/svgo/issues/1128
+                        removeViewBox: false,
+                    }
+                }
+            }
+        ];
+
+    if (inline) {
+        plugins.push('removeXMLNS');
+    }
+
+    return {
+        loader: ImageMinimizerPlugin.loader,
+        options: {
+            minimizer: {
+                filename: `${ASSET_DIRECTORY}/[name].svg`,
+                implementation: ImageMinimizerPlugin.svgoMinify,
+                options: {
+                    encodeOptions: {
+                        // Pass over SVGs multiple times to ensure all optimizations are applied.
+                        multipass: true,
+                        // Built-in plugins enabled by default
+                        // - see: https://github.com/svg/svgo#default-preset
+                        plugins
+                    }
+                }
+            }
+        }
+    };
+}
+
+
+export default (config: Configuration, { inline }: { inline?: string | string[] } = {}) => {
     let cwd = process.cwd(),
         directories: string[] = [];
 
-    if (spritemap) {
-        spritemap = Array.isArray(spritemap) ? spritemap : [spritemap];
+    if (inline) {
+        inline = Array.isArray(inline) ? inline : [inline];
 
-        for (let i = 0, n = spritemap.length; i < n; i++) {
-            directories.push( path.resolve(cwd, spritemap[i]) );
+        for (let i = 0, n = inline.length; i < n; i++) {
+            directories.push( path.resolve(cwd, inline[i]) );
         }
     }
 
@@ -24,49 +63,13 @@ export default (config: Configuration, { spritemap }: { spritemap?: string | str
             },
             test: /.svg$/,
             type: 'asset/resource',
-            use: [
-                {
-                    loader: ImageMinimizerPlugin.loader,
-                    options: {
-                        minimizer: {
-                            filename: `${ASSET_DIRECTORY}/[name].svg`,
-                            implementation: ImageMinimizerPlugin.svgoMinify,
-                            options: {
-                                encodeOptions: {
-                                    // Pass over SVGs multiple times to ensure all optimizations are applied.
-                                    multipass: true,
-                                    // Built-in plugins enabled by default
-                                    // - see: https://github.com/svg/svgo#default-preset
-                                    plugins: [
-                                        {
-                                            name: 'preset-default',
-                                            params: {
-                                                overrides: {
-                                                    // viewBox is required to resize SVGs with CSS.
-                                                    // @see https://github.com/svg/svgo/issues/1128
-                                                    removeViewBox: false,
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            ]
+            use: [ loader(false) ]
         },
         {
             include: directories,
             test: /.svg$/,
-            use: [
-                {
-                    loader: 'svg-sprite-loader',
-                    options: {
-                        outputPath: `${ASSET_DIRECTORY}/`
-                    }
-                }
-            ]
+            type: 'asset/source',
+            use: [ loader(true) ]
         }
     );
 };
