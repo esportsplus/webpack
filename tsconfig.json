@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
+        "declaration": true,
         "declarationDir": "build",
-        "module": "commonjs",
         "outDir": "build"
     },
     "exclude": ["node_modules"],

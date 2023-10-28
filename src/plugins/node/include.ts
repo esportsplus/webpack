@@ -4,36 +4,33 @@ import path from 'node:path';
 
 
 function externals(internal: string[] = []): NestedConfiguration['externals'] {
-    let externals: Record<string, string> = {},
+    let directories: string[] = [],
+        externals: Record<string, string> = {},
         modules = read('node_modules');
 
-    if (internal) {
-        let directories: string[] = [];
+    for (let directory of internal) {
+        if (directory[0] !== '@' || directory.indexOf('/') !== -1) {
+            continue;
+        }
 
-        for (let directory of internal) {
-            if (directory[0] !== '@' || directory.indexOf('/') !== -1) {
+        directories.push(directory);
+    }
+
+    for (let i = 0, n = modules.length; i < n; i++) {
+        let external = false,
+            module = modules[i];
+
+        for (let directory of directories) {
+            if (module.startsWith(directory)) {
                 continue;
             }
 
-            directories.push(directory);
+            external = true;
+            break;
         }
 
-        for (let i = 0, n = modules.length; i < n; i++) {
-            let external = false,
-                module = modules[i];
-
-            for (let directory of directories) {
-                if (module.startsWith(directory)) {
-                    continue;
-                }
-
-                external = true;
-                break;
-            }
-
-            if (external) {
-                externals[modules[i]] = modules[i];
-            }
+        if (external) {
+            externals[modules[i]] = modules[i];
         }
     }
 

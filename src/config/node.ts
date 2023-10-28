@@ -3,6 +3,10 @@ import config from './index';
 
 
 export default (base: NestedConfiguration) => {
+    base.contenthash ??= false;
+
+    base.externalsType ??= 'node-commonjs';
+
     // Disable all node polyfills
     base.node = false;
 
