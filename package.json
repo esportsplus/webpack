@@ -2,14 +2,14 @@
     "author": "ICJR",
     "dependencies": {
         "@esportsplus/typescript": "^0.0.17",
-        "@types/webpack-node-externals": "^3.0.3",
+        "@types/webpack-node-externals": "^3.0.4",
         "autoprefixer": "^10.4.16",
         "css-loader": "^6.8.1",
         "esbuild": "^0.19.5",
         "esbuild-loader": "^4.0.2",
-        "fast-glob": "^3.3.1",
+        "fast-glob": "^3.3.2",
         "favicons-webpack-plugin": "^6.0.1",
-        "fork-ts-checker-webpack-plugin": "^9.0.0",
+        "fork-ts-checker-webpack-plugin": "^9.0.2",
         "html-webpack-plugin": "^5.5.3",
         "image-minimizer-webpack-plugin": "^3.8.3",
         "json-minimizer-webpack-plugin": "^4.0.0",
@@ -36,7 +36,7 @@
             "default": "./build/index.js"
         },
         "./global": {
-            "types": "./build/global.d.ts"
+            "types": "./src/global.d.ts"
         }
     },
     "main": "build/index.js",
