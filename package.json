@@ -29,14 +29,12 @@
         "webpack-remove-empty-scripts": "^1.0.4"
     },
     "exports": {
+        "./global.d.ts": "./src/global.d.ts",
         "./package.json": "./package.json",
         "./tsconfig.base.json": "./tsconfig.base.json",
         ".": {
             "types": "./build/index.d.ts",
             "default": "./build/index.js"
-        },
-        "./global": {
-            "types": "./src/global.d.ts"
         }
     },
     "main": "build/index.js",
