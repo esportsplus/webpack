@@ -7,7 +7,7 @@ export default (config: Configuration) => {
     config.module.rules.push(
         {
             generator: {
-                filename: `${ASSET_DIRECTORY}/[contenthash].json`
+                filename: `${ASSET_DIRECTORY}/[contenthash][ext]`
             },
             test: /\.json$/,
             type: 'asset/resource'

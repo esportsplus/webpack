@@ -7,7 +7,6 @@ import node from './node';
 import web from './web';
 
 
-
 function config(base: NestedConfiguration) {
     base.cache ??= {
         type: 'filesystem'
@@ -25,7 +24,6 @@ function config(base: NestedConfiguration) {
     base.module.rules ??= [];
 
     base.optimization ??= {};
-    base.optimization.minimize ??= base.mode === 'production';
     base.optimization.minimizer ??= [];
 
     base.output ??= {};

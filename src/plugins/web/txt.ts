@@ -6,7 +6,7 @@ export default (config: Configuration) => {
     config.module.rules.push(
         {
             generator: {
-                filename: `${ASSET_DIRECTORY}/[contenthash].txt`
+                filename: `${ASSET_DIRECTORY}/[contenthash][ext]`
             },
             test: /\.txt$/,
             type: 'asset/resource'

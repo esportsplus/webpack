@@ -4,15 +4,12 @@ import { default as ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-p
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
 import esbuild from 'esbuild';
-import path from 'node:path';
 
 
-export default async (config: Configuration, { tsconfig }: { tsconfig?: string } = {}) => {
-    tsconfig ??= path.resolve('./tsconfig.json');
-
+export default async (config: Configuration, { tsconfig } = { tsconfig: './tsconfig.json'}) => {
     config.module.rules.push(
         {
-            test: /\.[jt]sx?$/,
+            test: /\.tsx?$/,
             loader: 'esbuild-loader',
             options: {
                 implementation: esbuild,
@@ -22,16 +19,19 @@ export default async (config: Configuration, { tsconfig }: { tsconfig?: string }
         }
     );
 
-    config.optimization.mangleWasmImports ??= config.mode === 'production';
     config.optimization.minimizer.push(
         new EsbuildPlugin({
-            css: true
+            css: true,
+            target: 'esnext'
         })
     );
-    config.optimization.usedExports ??= config.mode === 'production';
 
     config.plugins.push(
-        new ForkTsCheckerWebpackPlugin()
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                configFile: tsconfig
+            }
+        })
     );
 
     config.resolve.extensions = ['.tsx', '.ts', '.js'];
