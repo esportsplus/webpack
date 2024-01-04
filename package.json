@@ -1,7 +1,7 @@
 {
     "author": "ICJR",
     "dependencies": {
-        "@esportsplus/typescript": "^0.0.18",
+        "@esportsplus/typescript": "^0.0.19",
         "@types/webpack-node-externals": "^3.0.4",
         "autoprefixer": "^10.4.16",
         "css-loader": "^6.8.1",
@@ -17,10 +17,10 @@
         "node-polyfill-webpack-plugin": "^3.0.0",
         "postcss-loader": "^7.3.4",
         "purgecss": "^5.0.0",
-        "sass": "^1.69.6",
+        "sass": "^1.69.7",
         "sass-loader": "^13.3.3",
         "sharp": "^0.33.1",
-        "svgo": "^3.1.0",
+        "svgo": "^3.2.0",
         "ts-node": "^10.9.2",
         "tsconfig-paths-webpack-plugin": "^4.1.0",
         "webpack": "^5.89.0",
