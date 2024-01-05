@@ -1,8 +1,9 @@
 import { default as RemoveEmptyScriptsPlugin } from 'webpack-remove-empty-scripts';
 import { Configuration, NestedConfiguration } from '~/types';
 import { flatten } from '~/entry';
-import path from 'node:path';
 import plugins from '~/plugins';
+import path from 'node:path';
+import css from './css';
 import node from './node';
 import web from './web';
 
@@ -47,6 +48,8 @@ function config(base: NestedConfiguration) {
 
     return base as Configuration;
 }
+
+config.css = css;
 config.node = node;
 config.web = web;
 
