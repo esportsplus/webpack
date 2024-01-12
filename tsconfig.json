@@ -3,6 +3,8 @@
         "baseUrl": ".",
         "declaration": true,
         "declarationDir": "build",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
         "outDir": "build"
     },
     "exclude": ["node_modules"],
