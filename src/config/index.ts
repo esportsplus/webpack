@@ -16,6 +16,10 @@ function config(base: NestedConfiguration) {
     if (base.mode === 'production') {
         base.devtool = false;
     }
+    else {
+        base.snapshot ??= {};
+        base.snapshot.managedPaths ??= [];
+    }
 
     base.entry = flatten(base.entry, base.contenthash !== false && base.mode === 'production');
 
