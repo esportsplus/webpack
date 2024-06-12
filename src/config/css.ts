@@ -16,9 +16,7 @@ export default (base: NestedConfiguration) => {
         plugins.web.fonts();
         plugins.web.images();
         plugins.web.sass();
-        plugins.web.svg({
-            inline: 'storage/svg'
-        });
+        plugins.web.svg();
         plugins.web.txt();
         plugins.web.video();
     };

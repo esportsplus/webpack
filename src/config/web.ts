@@ -21,9 +21,7 @@ export default (base: NestedConfiguration) => {
         plugins.web.pdf();
         plugins.web.sass();
         plugins.web.server();
-        plugins.web.svg({
-            inline: 'storage/svg'
-        });
+        plugins.web.svg();
         plugins.web.txt();
         plugins.web.video();
     };
