@@ -5,10 +5,14 @@ declare module '*.mp4';
 declare module '*.pdf';
 declare module '*.png';
 declare module '*.svg' {
-    symbol: string;
-    title: string;
-    view: string;
-    viewBox: string;
+    const content: {
+        symbol: string;
+        title: string;
+        view: string;
+        viewBox: string;
+    };
+
+    export default content;
 };
 declare module '*.txt';
 declare module '*.webm';
