@@ -31,7 +31,8 @@ export default (config: Configuration) => {
                     },
                     type: 'asset'
                 }
-            ]
+            ],
+            test: /\.(gif|jpe?g|png|webp)$/
         })
     );
 };
