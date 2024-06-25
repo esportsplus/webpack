@@ -1,7 +1,7 @@
 {
     "author": "ICJR",
     "dependencies": {
-        "@esportsplus/typescript": "^0.4.0",
+        "@esportsplus/typescript": "^0.4.4",
         "@types/webpack-node-externals": "^3.0.4",
         "autoprefixer": "^10.4.19",
         "css-loader": "^7.1.2",
@@ -31,7 +31,8 @@
     "exports": {
         "./global.d.ts": "./src/global.d.ts",
         "./package.json": "./package.json",
-        "./tsconfig.base.json": "./tsconfig.base.json",
+        "./tsconfig.package.json": "./tsconfig.package.json",
+        "./tsconfig.project.json": "./tsconfig.project.json",
         ".": {
             "types": "./build/index.d.ts",
             "default": "./build/index.js"
