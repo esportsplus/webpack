@@ -3,6 +3,7 @@ const { EsbuildPlugin } = require('esbuild-loader');
 import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
 import esbuild from 'esbuild';
+import fs from 'node:fs';
 import path from 'node:path';
 
 
@@ -26,11 +27,35 @@ export default async (config: Configuration, { tsconfig } = { tsconfig: './tscon
         })
     );
 
-    let tsc = require( path.resolve(tsconfig) ),
+    let dir = path.dirname( path.resolve(tsconfig) ),
+        tsc = require( path.resolve(tsconfig) ),
         url = tsc?.compilerOptions?.baseURL;
 
     while (tsc?.extends && url === undefined) {
-        tsc = require( path.resolve(tsc.extends) );
+        let p;
+
+        if (tsc.extends.indexOf('${configDir}') !== -1) {
+            p = path.resolve( path.dirname(tsconfig), tsc.extends.split('${configDir}').pop() );
+        }
+        else if (tsc.extends.startsWith('.')) {
+            p = path.resolve(dir, tsc.extends);
+        }
+        else {
+            p = path.resolve(dir, 'node_modules', tsc.extends);
+
+            if (!fs.existsSync(p)) {
+                p = path.resolve(path.dirname( path.resolve(tsconfig) ), 'node_modules', tsc.extends);
+
+                console.log({
+                    path: p,
+                    tsconfig: path.dirname( path.resolve(tsconfig) ),
+                    extends: tsc.extends
+                });
+            }
+        }
+
+        dir = path.dirname(p);
+        tsc = require(p);
         url = tsc?.compilerOptions?.baseUrl;
     }
 
