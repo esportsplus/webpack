@@ -1,6 +1,6 @@
 const { EsbuildPlugin } = require('esbuild-loader');
 
-import { default as TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import { default as TsconfigPathsPlugin } from '@esportsplus/tsconfig-paths-webpack-plugin';
 import { Configuration } from '~/types';
 import { dirname, resolve } from 'node:path';
 import esbuild from 'esbuild';
