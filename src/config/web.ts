@@ -24,6 +24,10 @@ export default (base: NestedConfiguration) => {
         plugins.web.svg();
         plugins.web.txt();
         plugins.web.video();
+
+        if (base.mode === 'production') {
+            plugins.web.purgecss();
+        }
     };
 
     return config(base);

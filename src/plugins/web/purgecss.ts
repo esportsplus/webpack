@@ -1,4 +1,3 @@
-import { ASSET_DIRECTORY } from '~/constants';
 import { exec } from 'child_process';
 import { Configuration } from '~/types';
 
@@ -8,14 +7,7 @@ import { Configuration } from '~/types';
 export default (config: Configuration, options: { css?: string, js?: string, output?: string, variables?: boolean } = {}) => {
     options.css ??= `${config.output.path}/**/*.css`;
     options.js ??= `${config.output.path}/**/*.js`;
-    options.output ??= `${config.output.path}/${ASSET_DIRECTORY}`;
-
-    if (options.css.indexOf('\\') !== -1) {
-        for (let key of ['css', 'js', 'output']) {
-            // @ts-ignore
-            options[key] = options[key].replace(/\\/g, '/');
-        }
-    }
+    options.output ??= '.';
 
     config.plugins.push({
         apply: (compiler) => {
