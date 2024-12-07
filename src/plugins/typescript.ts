@@ -5,6 +5,9 @@ import { Configuration } from '~/types';
 import esbuild from 'esbuild';
 
 
+let extensions = ['.tsx', '.ts', '.js'];
+
+
 export default async (config: Configuration, { tsconfig } = { tsconfig: './tsconfig.json' }) => {
     config.module.rules.push(
         {
@@ -25,12 +28,15 @@ export default async (config: Configuration, { tsconfig } = { tsconfig: './tscon
         })
     );
 
-    config.resolve.extensions = ['.tsx', '.ts', '.js'];
+
+    config.resolve.extensions ??= [];
+    config.resolve.extensions.push(...extensions)
+
     config.resolve.fullySpecified = false;
     config.resolve.plugins.push(
         new TsconfigPathsPlugin({
             configFile: tsconfig,
-            extensions: config.resolve.extensions
+            extensions
         })
     );
 };
