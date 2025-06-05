@@ -31,4 +31,4 @@ interface NestedEntry {
 };
 
 
-export { Configuration, NestedConfiguration };
+export type { Configuration, NestedConfiguration };
