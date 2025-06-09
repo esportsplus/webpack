@@ -12,8 +12,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       '@esportsplus/typescript':
-        specifier: ^0.8.11
-        version: 0.8.11
+        specifier: ^0.8.14
+        version: 0.8.14
       '@types/webpack-node-externals':
         specifier: ^3.0.4
         version: 3.0.4(esbuild@0.25.5)(webpack-cli@6.0.1)
@@ -261,15 +261,15 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@esportsplus/cli-passthrough@0.0.6':
-    resolution: {integrity: sha512-G1/5WZjsN6S/k02M+G9yxB//gBqfjxeZeZj16O5Hn2iDUyKpIw9Y2wXrZXQWDizCS5MF/z7BURrNskCzVsaQRw==}
+  '@esportsplus/cli-passthrough@0.0.10':
+    resolution: {integrity: sha512-/DcLjDxIB9NponyFtMQ3ICCXUA/hH1hp4FaL6AOepG1TwvY8g9y1MVLM71Coq7e0NpxUZt1pg73z6KSrh3Xd0w==}
 
   '@esportsplus/tsconfig-paths-webpack-plugin@4.2.0':
     resolution: {integrity: sha512-b6jTyPps4ArmD7iBXjk2jC4LWKqn2J/+ShxXkTdtmL2W0F7HoYcNPWza/4P37hXCxr17fXWG4UaLSQqVNvmDPg==}
     engines: {node: '>=10.13.0'}
 
-  '@esportsplus/typescript@0.8.11':
-    resolution: {integrity: sha512-fCcqjMyQRmXDyWDX3bUzRgpU/OEQjCdpCcUHVvRKoCquwWbIc1Y8hvdSwoDdCovObOJ7ejyY+B5ByJg8KIaKww==}
+  '@esportsplus/typescript@0.8.14':
+    resolution: {integrity: sha512-BnoclJMbwhIN7/vCn+w7vBGJVrWD7MBHhh9XvUiaoPc+XiJA9ZW9uRmjbmBgUAi4z4k4Qa6oil4h6E2H1jBDEQ==}
     hasBin: true
 
   '@img/sharp-darwin-arm64@0.33.5':
@@ -3426,7 +3426,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.5':
     optional: true
 
-  '@esportsplus/cli-passthrough@0.0.6': {}
+  '@esportsplus/cli-passthrough@0.0.10': {}
 
   '@esportsplus/tsconfig-paths-webpack-plugin@4.2.0':
     dependencies:
@@ -3434,9 +3434,9 @@ snapshots:
       enhanced-resolve: 5.18.1
       tsconfig-paths: 4.2.0
 
-  '@esportsplus/typescript@0.8.11':
+  '@esportsplus/typescript@0.8.14':
     dependencies:
-      '@esportsplus/cli-passthrough': 0.0.6
+      '@esportsplus/cli-passthrough': 0.0.10
       tsc-alias: 1.8.16
       typescript: 5.8.3
 

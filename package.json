@@ -2,7 +2,7 @@
     "author": "ICJR",
     "dependencies": {
         "@esportsplus/tsconfig-paths-webpack-plugin": "^4.2.0",
-        "@esportsplus/typescript": "^0.8.11",
+        "@esportsplus/typescript": "^0.8.14",
         "@types/webpack-node-externals": "^3.0.4",
         "autoprefixer": "^10.4.21",
         "css-loader": "^7.1.2",
