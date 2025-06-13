@@ -48,7 +48,6 @@
         "prepare": "pnpm build",
         "prepublishOnly": "pnpm build"
     },
-    "type": "module",
     "types": "build/index.d.ts",
     "version": "0.5.5"
 }
