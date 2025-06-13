@@ -3,10 +3,12 @@ import { Configuration } from '~/types';
 
 
 export default (config: Configuration) => {
-    let pkg = require('external-svg-sprite-loader');
+    // @ts-ignore
+    let pkg = import('external-svg-sprite-loader');
 
     config.module.rules.push(
         {
+            // @ts-ignore
             loader: pkg.loader,
             options: {
                 iconName: '[hash]',
@@ -17,6 +19,7 @@ export default (config: Configuration) => {
     );
 
     config.plugins.push(
+        // @ts-ignore
         new pkg({
             sprite: {
                 startX: 4,
