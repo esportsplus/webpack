@@ -1,13 +1,13 @@
 import { ASSET_DIRECTORY } from '~/constants';
 import { Configuration } from '~/types';
+// @ts-ignore
+import svg from 'external-svg-sprite-loader';
 
 
 export default (config: Configuration) => {
-    let pkg = require('external-svg-sprite-loader');
-
     config.module.rules.push(
         {
-            loader: pkg.loader,
+            loader: svg.loader,
             options: {
                 iconName: '[hash]',
                 name: `${ASSET_DIRECTORY}/[contenthash].svg`
@@ -17,7 +17,7 @@ export default (config: Configuration) => {
     );
 
     config.plugins.push(
-        new pkg({
+        new svg({
             sprite: {
                 startX: 4,
                 startY: 4,
